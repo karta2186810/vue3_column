@@ -4,30 +4,31 @@
       <!-- <column-list :list="list"></column-list> -->
       <form>
         <div class="mb-3">
-          <label class="form-label">電子郵件</label>
-          <validate-input :rules="emailRules"></validate-input>
+          <label class="form-label" for="email-input">電子郵件</label>
+          <validate-input
+            id="email-input"
+            :rules="emailRules"
+            v-model="emailVal"
+            type="text"
+            placeholder="請輸入電子郵件"
+            ></validate-input>
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">電子郵件</label>
-          <input
-            type="email"
-            class="form-control"
-            id="exampleInputEmail1"
-            v-model="emailRef.val"
-            @blur="validateEmail"
-            />
-            <div class="form-text" v-if="emailRef.error">{{ emailRef.message }}</div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">密碼</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label class="form-label" for="password-input">密碼</label>
+          <validate-input
+            id="password-input"
+            :rules="passwordRules"
+            v-model="passwordVal"
+            type="password"
+            placeholder="請輸入密碼"
+            ></validate-input>
         </div>
       </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, ref } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import ColumnList, { ColumnProps } from './components/ColumnList.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
@@ -39,7 +40,7 @@ const currentUser: UserProps = {
 }
 
 // 驗證email格式的正則表達式
-const emailReg = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
+// const emailReg = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
 
 // #region
 // const testData:ColumnProps[] = [
@@ -77,18 +78,22 @@ export default defineComponent({
     ValidateInput
   },
   setup () {
+    const emailVal = ref('')
+    const passwordVal = ref('')
     // 用來傳入validateInput組件的規則
     const emailRules:RulesProp = [
       { type: 'required', message: '電子郵件地址不能為空' },
       { type: 'email', message: '請輸入正確的電子郵件格式' }
     ]
+    const passwordRules:RulesProp = [
+      { type: 'required', message: '密碼不能為空' }
+    ]
 
-    const emailRef = reactive({
+    /* const emailRef = reactive({
       val: '',
       error: false,
       message: ''
     })
-
     // 每次輸入框blur的時候執行的函數
     const validateEmail = () => {
       // 將頭尾空格去掉之後值仍然為空
@@ -102,14 +107,17 @@ export default defineComponent({
         // 其他情況，代表通過所有驗證
         emailRef.error = false
       }
-    }
+    } */
 
     return {
       // list: testData,
       currentUser,
-      emailRef,
-      validateEmail,
-      emailRules
+      // emailRef,
+      // validateEmail,
+      emailRules,
+      emailVal,
+      passwordVal,
+      passwordRules
     }
   }
 })

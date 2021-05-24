@@ -15,11 +15,9 @@ const useClickOutside = (elementRef: Ref<null | HTMLElement>) => {
     }
   }
   onMounted(() => {
-    console.log('click')
     document.addEventListener('click', handler)
   })
   onUnmounted(() => {
-    console.log('click')
     document.removeEventListener('click', handler)
   })
   return isClickOutside
