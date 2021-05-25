@@ -1,6 +1,7 @@
 <template>
   <div class="validate-input-container pb-3">
     <input
+      v-if="tag !== 'textarea'"
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
       :value = "inputRef.val"
@@ -8,12 +9,23 @@
       @input="updateValue"
       v-bind="$attrs"
     >
+    <textarea
+      v-else
+      class="form-control"
+      :class="{ 'is-invalid': inputRef.error }"
+      :value = "inputRef.val"
+      @blur="validateInput"
+      @input="updateValue"
+      v-bind="$attrs"
+    >
+    </textarea>
     <span v-if="inputRef.error" class="invalid-feedback">{{ inputRef.message }}</span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType } from 'vue'
+import { defineComponent, reactive, PropType, onMounted } from 'vue'
+import { emitter } from './ValidateForm.vue'
 
 // email驗證正則表達式
 const emailReg = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
@@ -25,6 +37,7 @@ interface RuleProp {
 }
 // 自定義type方便日後使用
 export type RulesProp = RuleProp[]
+export type TagType = 'input' | 'textarea'
 
 export default defineComponent({
   name: 'ValidateInput',
@@ -32,6 +45,10 @@ export default defineComponent({
     // 接收傳入的rules
     rules: {
       type: Array as PropType<RulesProp>
+    },
+    tag: {
+      type: String as PropType<TagType>,
+      default: 'input'
     },
     modelValue: String
   },
@@ -71,7 +88,9 @@ export default defineComponent({
         })
         // 如果allPassed為true代表通過驗證，inputRef沒有錯誤
         inputRef.error = !allPassed
+        return allPassed
       }
+      return true
     }
 
     const updateValue = (e: KeyboardEvent) => {
@@ -80,6 +99,15 @@ export default defineComponent({
       context.emit('update:modelValue', targetValue)
     }
 
+    const inputReset = () => {
+      inputRef.val = ''
+      context.emit('update:modelValue', '')
+    }
+
+    onMounted(() => {
+      emitter.emit('form-item-created', validateInput)
+      emitter.on('resetInput', inputReset)
+    })
     return {
       inputRef,
       validateInput,
