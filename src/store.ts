@@ -26,7 +26,7 @@ const store = createStore<GlobalDataProps>({
   state: {
     columns: testData,
     posts: testPosts,
-    user: { isLogin: true, name: 'chen', columnId: 1 }
+    user: { isLogin: false, name: 'chen', columnId: 1 }
   },
   mutations: {
     login (state) {
