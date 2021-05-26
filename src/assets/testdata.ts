@@ -1,3 +1,5 @@
+import { ColumnProps } from '../store'
+
 export interface PostProps {
   id: number
   title: string
@@ -6,35 +8,27 @@ export interface PostProps {
   createdAt: string
   columnId: number
 }
-
-export interface ColumnProps {
-  id: number;
-  title: string;
-  avatar?: string;
-  description: string;
-}
-
-export const testData: ColumnProps[] = [
+export const testData = [
   {
-    id: 1,
+    _id: '1',
     title: 'test1專欄',
     description: '這是test1的專欄，有一段有趣的簡介',
     avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/277px-Vue.js_Logo_2.svg.png'
   },
   {
-    id: 2,
+    _id: '2',
     title: 'test2專欄',
     description: '這是test2的專欄，有一段有趣的簡介',
     avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/277px-Vue.js_Logo_2.svg.png'
   },
   {
-    id: 3,
+    _id: '3',
     title: 'test3專欄',
     description: '這是test3的專欄，有一段有趣的簡介'
     // avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/277px-Vue.js_Logo_2.svg.png'
   },
   {
-    id: 4,
+    _id: '4',
     title: 'test4專欄',
     description: '這是test4的專欄，有一段有趣的簡介',
     avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/277px-Vue.js_Logo_2.svg.png'

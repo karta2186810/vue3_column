@@ -29,7 +29,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { GlobalDataProps, PostProps } from '../store'
 import ValidateForm from '../components/ValidateForm.vue'
 import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
@@ -55,17 +55,18 @@ export default defineComponent({
     ]
     const onFormSubmit = (result: boolean) => {
       if (result) {
-        const { columnId } = store.state.user
-        if (columnId) {
+        const { column } = computed(() => store.state.user).value
+        if (column) {
           const newPost:PostProps = {
-            id: new Date().getTime(),
+            _id: '' + new Date().getTime(),
             title: titleVal.value,
             content: contentVal.value,
-            columnId,
+            column: '' + column,
             createdAt: new Date().toLocaleString()
           }
+          // 使用commit方法觸發store中的mutations內的函數，commit第一個參數是要觸發的函數名字，第二個參數是要傳遞的數據
           store.commit('createPost', newPost)
-          router.push({ name: 'column', params: { id: columnId } })
+          router.push({ name: 'column', params: { id: column } })
         }
       }
     }

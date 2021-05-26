@@ -18,6 +18,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
+      // meta屬性的值會添加到路由物件的meta屬性中，作為路由守衛的判斷依據
       meta: { redirectAlreadyLogin: true }
     },
     {
@@ -34,7 +35,9 @@ const router = createRouter({
   ]
 })
 router.beforeEach((to, from, next) => {
+  // 通過meta標籤與登入狀態，判斷是否進行跳轉
   if (to.meta.requiredLogin && !store.state.user.isLogin) {
+    // next函數傳入一個物件，name屬性表示要跳轉到的路由名字
     next({ name: 'login' })
   } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin) {
     next({ name: 'home' })
