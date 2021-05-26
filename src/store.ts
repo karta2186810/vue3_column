@@ -1,5 +1,12 @@
-import { createStore } from 'vuex'
+import { Commit, createStore } from 'vuex'
 import axios from 'axios'
+
+axios.defaults.baseURL = 'http://apis.imooc.com/api/'
+axios.interceptors.request.use(config => {
+  config.params = { ...config.params, icode: '66009976EB10AF9E' }
+  return config
+})
+
 export interface UserProps {
   isLogin: boolean
   name?: string
@@ -35,12 +42,18 @@ export interface GlobalDataProps {
   user: UserProps
 }
 
+const asyncCommit = async (url: string, mutationName: string, commit: Commit) => {
+  const { data } = await axios.get(url)
+  commit(mutationName, data)
+}
+
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
     posts: [],
     user: { isLogin: false, name: 'chen', column: 1 }
   },
+
   mutations: {
     login (state) {
       state.user = { ...state.user, isLogin: true, name: 'chen' }
@@ -59,23 +72,19 @@ const store = createStore<GlobalDataProps>({
       state.posts = rawData.data.list
     }
   },
+
   actions: {
-    fetchColumns (context) {
-      axios.get('/columns').then(res => {
-        context.commit('fetchColumns', res.data)
-      })
+    async fetchColumns ({ commit }) {
+      asyncCommit('/columns', 'fetchColumns', commit)
     },
-    fetchColumn ({ commit }, cid) {
-      axios.get(`/columns/${cid}`).then(res => {
-        commit('fetchColumn', res.data)
-      })
+    async fetchColumn ({ commit }, cid) {
+      asyncCommit(`/columns/${cid}`, 'fetchColumn', commit)
     },
-    fetchPosts ({ commit }, cid) {
-      axios.get(`/columns/${cid}/posts`).then(res => {
-        commit('fetchPosts', res.data)
-      })
+    async fetchPosts ({ commit }, cid) {
+      asyncCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
     }
   },
+
   getters: {
     // 如果getter需要進行參數的接收可以使用函數柯里化的形式
     getColumnsById: state => (id: string) => {
