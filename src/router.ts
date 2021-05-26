@@ -19,6 +19,7 @@ const router = createRouter({
       name: 'login',
       component: Login,
       // meta屬性的值會添加到路由物件的meta屬性中，作為路由守衛的判斷依據
+      // meta只是一個標籤作為判斷之用，沒有額外的特殊效果
       meta: { redirectAlreadyLogin: true }
     },
     {

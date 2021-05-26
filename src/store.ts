@@ -1,12 +1,6 @@
 import { Commit, createStore } from 'vuex'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://apis.imooc.com/api/'
-axios.interceptors.request.use(config => {
-  config.params = { ...config.params, icode: '66009976EB10AF9E' }
-  return config
-})
-
 export interface UserProps {
   isLogin: boolean
   name?: string
@@ -40,20 +34,24 @@ export interface GlobalDataProps {
   columns: ColumnProps[]
   posts: PostProps[]
   user: UserProps
+  loading: boolean
 }
 
+// 將重複性的AJAX請求代碼進行封裝
 const asyncCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
   commit(mutationName, data)
 }
 
 const store = createStore<GlobalDataProps>({
+  // 儲存數據的地方
   state: {
     columns: [],
     posts: [],
-    user: { isLogin: false, name: 'chen', column: 1 }
+    user: { isLogin: false, name: 'chen', column: 1 },
+    loading: false
   },
-
+  // 在mutation內進行數據的操作
   mutations: {
     login (state) {
       state.user = { ...state.user, isLogin: true, name: 'chen' }
@@ -70,9 +68,13 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts (state, rawData) {
       state.posts = rawData.data.list
+    },
+    setLoading (state, status) {
+      state.loading = status
     }
   },
-
+  // 異步的操作都在action中執行
+  // action中的方法會接收到context裡面有store中的屬性及方法，使用commit提交一個mutation
   actions: {
     async fetchColumns ({ commit }) {
       asyncCommit('/columns', 'fetchColumns', commit)
@@ -84,7 +86,7 @@ const store = createStore<GlobalDataProps>({
       asyncCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
     }
   },
-
+  // 相當於computed
   getters: {
     // 如果getter需要進行參數的接收可以使用函數柯里化的形式
     getColumnsById: state => (id: string) => {
