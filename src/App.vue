@@ -1,7 +1,6 @@
 <template>
   <div class="container">
       <global-header :user="currentUser"></global-header>
-      <h1>{{ error.message }}</h1>
       <loader v-if="isLoading" text="加載中" background="rgba(0,0,0,.8)"></loader>
       <router-view></router-view>
       <footer class="text-center py-4 text-secondary bg-light mt-6">
@@ -19,12 +18,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from 'vue'
+import { defineComponent, computed, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import { GlobalDataProps } from './store'
 import GlobalHeader from './components/GlobalHeader.vue'
 import Loader from './components/Loader.vue'
+import createMessage from './components/createMessage'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default defineComponent({
@@ -39,6 +39,18 @@ export default defineComponent({
     const isLoading = computed(() => store.state.loading)
     const token = computed(() => store.state.token)
     const error = computed(() => store.state.error)
+
+    // 監視error屬性的變化
+    // 使用getter方式監視error內的status
+    watch(() => error.value.status, () => {
+      // 將status與message從error中取出
+      const { status, message } = error.value
+      // 判斷如果status為true，並且message存在
+      if (status && message) {
+        // 執行創建應用的函數
+        createMessage(message, 'error')
+      }
+    })
 
     onMounted(() => {
       if (!currentUser.value.isLogin && token.value) {

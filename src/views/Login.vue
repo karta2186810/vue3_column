@@ -53,18 +53,20 @@ export default defineComponent({
       { type: 'required', message: '密碼不能為空' }
     ]
 
-    const onFormSubmit = (result: boolean) => {
+    const onFormSubmit = async (result: boolean) => {
       if (result) {
         const payload = {
           email: emailVal.value,
           password: passwordVal.value
         }
-        store.dispatch('loginAndFetch', payload).then(data => {
+        try {
+          const data = await store.dispatch('loginAndFetch', payload)
           console.log(data)
           router.push('/')
-        }).catch(e => {
+        } catch (e) {
+          // catch會接收到由axios攔截器拋出的錯誤
           console.log(e)
-        })
+        }
       }
     }
 

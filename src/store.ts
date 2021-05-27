@@ -115,10 +115,9 @@ const store = createStore<GlobalDataProps>({
     fetchCurrentUser ({ commit }) {
       getAndCommit('/user/current', 'fetchCurrentUser', commit)
     },
-    loginAndFetch ({ dispatch }, loginData) {
-      return dispatch('login', loginData).then(() => {
-        return dispatch('fetchCurrentUser')
-      })
+    async loginAndFetch ({ dispatch }, loginData) {
+      await dispatch('login', loginData)
+      return await dispatch('fetchCurrentUser')
     }
   },
   // 相當於computed
