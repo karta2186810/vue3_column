@@ -1,12 +1,14 @@
 <template>
     <div class="row">
-      <div v-for="column in columnList" :key="column._id" class="col-4 mb-4">
+      <div v-for="column in columnList" :key="column._id" class="col-4 mb-2 mt-3">
         <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <img :src="column.avatar && column.avatar.url" :alt="column.title" class="rounded-circle border border-light w-25 my-3">
-            <h5 class="card-title">{{column.title}}</h5>
-            <p class="card-text text-left">{{column.description}}</p>
-            <router-link :to="`/column/${column._id}`" class="btn btn-outline-primary">進入專欄</router-link>
+          <div class="card-body text-center d-flex flex-column justify-content-between align-items-center h-100">
+            <div>
+              <img :src="column.avatar && column.avatar.url" :alt="column.title" class="rounded-circle border border-light w-25 my-3">
+              <h5 class="card-title fw-bolder mb-3">{{column.title}}</h5>
+              <p class="card-text text-left">{{column.description}}</p>
+            </div>
+            <router-link :to="`/column/${column._id}`" class="btn btn-outline-primary w-50 mt-5">進入專欄</router-link>
           </div>
         </div>
       </div>

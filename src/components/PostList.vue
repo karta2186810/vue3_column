@@ -1,11 +1,11 @@
 <template>
   <div class="post-list">
     <article v-for="post in list" :key="post._id" class="card mb03 shadow-sm my-3">
-      <div class="card-body">
-        <h4>{{ post.title }}</h4>
+      <div class="card-body px-5 py-4">
+        <h4 class="fw-bolder">{{ post.title }}</h4>
         <div class="row my-3 align-items-center">
           <div v-if="post.image" class="col-3">
-            <img :src="post.image.url" :alt="post.title" class="rounded-lg w-100">
+            <img :src="post.image.url" :alt="post.title" class="rounded-lg w-75">
           </div>
           <p :class="{ 'col-9': post.image }">{{ post.excerpt }}</p>
         </div>

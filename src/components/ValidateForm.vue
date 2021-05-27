@@ -1,9 +1,9 @@
 <template>
-  <form class="validate-form-container" @submit.prevent="submitForm">
+  <form class="validate-form-container w-50 mx-auto my-5" @submit.prevent="submitForm">
     <slot name="default"></slot>
     <div class="submit-area">
       <slot name="submit">
-        <button type="submit" class="btn btn-primary">確認</button>
+        <button type="submit" class="btn btn-primary w-100">確認</button>
       </slot>
     </div>
   </form>

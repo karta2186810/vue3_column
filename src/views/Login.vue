@@ -1,8 +1,8 @@
 <template>
   <div class="login-page">
     <validate-form @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label class="form-label">電子郵件</label>
+      <div class="mb-2">
+        <label class="form-label fw-bolder">電子郵件</label>
         <validate-input
           :rules="emailRules" v-model="emailVal"
           placeholder="請輸入電子郵件"
@@ -10,8 +10,8 @@
           ref="inputRef"
         />
       </div>
-      <div class="mb-3">
-        <label class="form-label">密碼</label>
+      <div class="mb-2">
+        <label class="form-label fw-bolder">密碼</label>
         <validate-input
           type="password"
           placeholder="請輸入密碼"
@@ -19,6 +19,9 @@
           v-model="passwordVal"
         />
       </div>
+      <template #submit>
+        <button type="submit" class="btn btn-primary w-100 fw-bolder">登入</button>
+      </template>
     </validate-form>
   </div>
 </template>

@@ -95,6 +95,12 @@ const store = createStore<GlobalDataProps>({
     },
     fetchCurrentUser (state, rawData) {
       state.user = { isLogin: true, ...rawData.data }
+    },
+    logout (state) {
+      state.user = { isLogin: false }
+      state.token = ''
+      localStorage.removeItem('token')
+      delete axios.defaults.headers.common.Authorization
     }
   },
   // 異步的操作都在action中執行

@@ -3,10 +3,10 @@
     <router-link to="/" class="navbar-brand">者也專欄</router-link>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
       <li class="list-inline-item">
-        <router-link to="/login" class="btn btn-outline-light my-2">登入</router-link>
+        <router-link to="/login" class="btn btn-outline-light my-2 fw-bolder">登入</router-link>
       </li>
       <li class="list-inline-item">
-        <router-link to="/login" class="btn btn-outline-light my-2">註冊</router-link>
+        <router-link to="/signup" class="btn btn-outline-light my-2 fw-bolder">註冊</router-link>
       </li>
     </ul>
     <ul v-else class="list-inline mb-0">
@@ -14,7 +14,7 @@
         <drop-down :title="`你好 ${user.nickName}`">
           <drop-down-item><router-link to="/create" class="dropdown-item">新建文章</router-link></drop-down-item>
           <drop-down-item disabled><a href="#" class="dropdown-item">編輯資料</a></drop-down-item>
-          <drop-down-item><a href="#" class="dropdown-item">退出登入</a></drop-down-item>
+          <drop-down-item><a href="#" class="dropdown-item" @click="logout">退出登入</a></drop-down-item>
         </drop-down>
       </li>
     </ul>
@@ -22,7 +22,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { UserProps } from '../store'
+import { useStore } from 'vuex'
+import { UserProps, GlobalDataProps } from '../store'
 import DropDown from './DropDown.vue'
 import DropDownItem from './DropDownItem.vue'
 
@@ -36,6 +37,17 @@ export default defineComponent({
     user: {
       type: Object as PropType<UserProps>,
       required: true
+    }
+  },
+  setup () {
+    const store = useStore<GlobalDataProps>()
+    const logout = () => {
+      if (store.state.user.isLogin) {
+        store.commit('logout')
+      }
+    }
+    return {
+      logout
     }
   }
 })

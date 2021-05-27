@@ -32,8 +32,9 @@ const emailReg = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za
 
 // 用來限制傳入的rule，必須指定類型以及錯誤訊息
 interface RuleProp {
-  type: 'required' | 'email'
-  message: string
+  type: 'required' | 'email' | 'custom'
+  message: string,
+  validator?: () => boolean
 }
 // 自定義type方便日後使用
 export type RulesProp = RuleProp[]
@@ -79,6 +80,9 @@ export default defineComponent({
               break
             case 'email':
               passed = emailReg.test(inputRef.val.trim())
+              break
+            case 'custom':
+              passed = rule.validator ? rule.validator() : true
               break
             default:
               break
