@@ -35,6 +35,7 @@ const router = createRouter({
     }
   ]
 })
+
 router.beforeEach((to, from, next) => {
   // 通過meta標籤與登入狀態，判斷是否進行跳轉
   if (to.meta.requiredLogin && !store.state.user.isLogin) {

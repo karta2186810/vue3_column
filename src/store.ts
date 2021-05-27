@@ -31,12 +31,18 @@ export interface PostProps {
   column: string
 }
 
+export interface GlobalErrorProps {
+  status: boolean
+  message?: string
+}
+
 export interface GlobalDataProps {
   token: string
   columns: ColumnProps[]
   posts: PostProps[]
   user: UserProps
   loading: boolean
+  error: GlobalErrorProps
 }
 
 // 將重複性的AJAX請求代碼進行封裝
@@ -53,17 +59,15 @@ const postAndCommit = async (url: string, mutationName: string, commit: Commit, 
 const store = createStore<GlobalDataProps>({
   // 儲存數據的地方
   state: {
-    token: '',
+    token: localStorage.getItem('token') || '',
     columns: [],
     posts: [],
     user: { isLogin: false },
-    loading: false
+    loading: false,
+    error: { status: false }
   },
   // 在mutation內進行數據的操作
   mutations: {
-    /*  login (state) {
-      state.user = { ...state.user, isLogin: true, name: 'chen' }
-    }, */
     // mutations對應組件commit的事件，可以接收到commit第二個參數傳過來的數據，這裡是newPost
     createPost (state, newPost) {
       state.posts.push(newPost)
@@ -80,9 +84,13 @@ const store = createStore<GlobalDataProps>({
     setLoading (state, status) {
       state.loading = status
     },
+    setError (state, e: GlobalErrorProps) {
+      state.error = e
+    },
     login (state, rawData) {
       const { token } = rawData.data
       state.token = token
+      localStorage.setItem('token', token)
       axios.defaults.headers.common.Authorization = `Bearer ${token}`
     },
     fetchCurrentUser (state, rawData) {
