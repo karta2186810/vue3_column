@@ -31,14 +31,12 @@ export default defineComponent({
     // 因為setup只會執行一次，但是vuex中的數據是響應式的，最簡單的方式是通過computed去監視vuex中的數據
     const list = computed(() => store.state.columns)
     // store中的getter屬性類似於computed屬性，將store中的數據處理過後進行返回
-    const biggerColumnLen = computed(() => store.getters.biggerColumnLen)
 
     onMounted(() => {
       store.dispatch('fetchColumns')
     })
     return {
-      list,
-      biggerColumnLen
+      list
     }
   }
 })

@@ -3,9 +3,10 @@ import axios from 'axios'
 
 export interface UserProps {
   isLogin: boolean
-  name?: string
-  id?: number
-  column?: number
+  nickName?: string
+  _id?: string
+  column?: string
+  email?: string
 }
 
 export interface ImageProps {
@@ -31,6 +32,7 @@ export interface PostProps {
 }
 
 export interface GlobalDataProps {
+  token: string
   columns: ColumnProps[]
   posts: PostProps[]
   user: UserProps
@@ -38,24 +40,30 @@ export interface GlobalDataProps {
 }
 
 // 將重複性的AJAX請求代碼進行封裝
-const asyncCommit = async (url: string, mutationName: string, commit: Commit) => {
+const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
   commit(mutationName, data)
+}
+const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
+  const { data } = await axios.post(url, payload)
+  commit(mutationName, data)
+  return data
 }
 
 const store = createStore<GlobalDataProps>({
   // 儲存數據的地方
   state: {
+    token: '',
     columns: [],
     posts: [],
-    user: { isLogin: false, name: 'chen', column: 1 },
+    user: { isLogin: false },
     loading: false
   },
   // 在mutation內進行數據的操作
   mutations: {
-    login (state) {
+    /*  login (state) {
       state.user = { ...state.user, isLogin: true, name: 'chen' }
-    },
+    }, */
     // mutations對應組件commit的事件，可以接收到commit第二個參數傳過來的數據，這裡是newPost
     createPost (state, newPost) {
       state.posts.push(newPost)
@@ -71,19 +79,38 @@ const store = createStore<GlobalDataProps>({
     },
     setLoading (state, status) {
       state.loading = status
+    },
+    login (state, rawData) {
+      const { token } = rawData.data
+      state.token = token
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    },
+    fetchCurrentUser (state, rawData) {
+      state.user = { isLogin: true, ...rawData.data }
     }
   },
   // 異步的操作都在action中執行
   // action中的方法會接收到context裡面有store中的屬性及方法，使用commit提交一個mutation
   actions: {
-    async fetchColumns ({ commit }) {
-      asyncCommit('/columns', 'fetchColumns', commit)
+    fetchColumns ({ commit }) {
+      getAndCommit('/columns', 'fetchColumns', commit)
     },
-    async fetchColumn ({ commit }, cid) {
-      asyncCommit(`/columns/${cid}`, 'fetchColumn', commit)
+    fetchColumn ({ commit }, cid) {
+      getAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
     },
-    async fetchPosts ({ commit }, cid) {
-      asyncCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
+    fetchPosts ({ commit }, cid) {
+      getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
+    },
+    login ({ commit }, payload) {
+      return postAndCommit('/user/login', 'login', commit, payload)
+    },
+    fetchCurrentUser ({ commit }) {
+      getAndCommit('/user/current', 'fetchCurrentUser', commit)
+    },
+    loginAndFetch ({ dispatch }, loginData) {
+      return dispatch('login', loginData).then(() => {
+        return dispatch('fetchCurrentUser')
+      })
     }
   },
   // 相當於computed
