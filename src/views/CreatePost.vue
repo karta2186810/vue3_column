@@ -1,6 +1,7 @@
 <template>
   <div class="create-post-page">
     <h4>新建文章</h4>
+    <input type="file" name="file" @change.prevent="handleFileChange">
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">文章標題:</label>
@@ -30,7 +31,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { GlobalDataProps, PostProps } from '../store'
+import axios from 'axios'
+import { GlobalDataProps } from '../store'
 import ValidateForm from '../components/ValidateForm.vue'
 import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
 import { useStore } from 'vuex'
@@ -57,12 +59,10 @@ export default defineComponent({
       if (result) {
         const { column } = computed(() => store.state.user).value
         if (column) {
-          const newPost:PostProps = {
-            _id: '' + new Date().getTime(),
+          const newPost = {
             title: titleVal.value,
             content: contentVal.value,
-            column: '' + column,
-            createdAt: new Date().toLocaleString()
+            column
           }
           // 使用commit方法觸發store中的mutations內的函數，commit第一個參數是要觸發的函數名字，第二個參數是要傳遞的數據
           store.commit('createPost', newPost)
@@ -70,12 +70,29 @@ export default defineComponent({
         }
       }
     }
+    const handleFileChange = (e: Event) => {
+      const target = e.target as HTMLInputElement
+      const files = target.files
+      if (files) {
+        const uploadedFile = files[0]
+        const formData = new FormData()
+        formData.append(uploadedFile.name, uploadedFile)
+        axios.post('/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then((res: any) => {
+          console.log(res)
+        })
+      }
+    }
     return {
       titleVal,
       titleRules,
       contentVal,
       contentRules,
-      onFormSubmit
+      onFormSubmit,
+      handleFileChange
     }
   }
 })

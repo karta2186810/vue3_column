@@ -1,5 +1,10 @@
 <template>
   <div class="home-page">
+    <uploader
+      action="/upload"
+      :beforeUpload="beforeUpload"
+      @file-uploaded="onFileUploaded"
+      ></uploader>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
@@ -17,14 +22,17 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import ColumnList from '../components/ColumnList.vue'
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '../store'
+import ColumnList from '../components/ColumnList.vue'
+import Uploader from '../components/Uploader.vue'
+import createMessage from '../components/createMessage'
+import { GlobalDataProps, ResponseType, ImageProps } from '../store'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    ColumnList
+    ColumnList,
+    Uploader
   },
   setup () {
     const store = useStore<GlobalDataProps>()
@@ -32,11 +40,23 @@ export default defineComponent({
     const list = computed(() => store.state.columns)
     // store中的getter屬性類似於computed屬性，將store中的數據處理過後進行返回
 
+    const beforeUpload = (file: File) => {
+      const isJPG = file.type === 'image/jpeg'
+      if (!isJPG) {
+        createMessage('上傳圖片格式只能是JPG', 'error')
+      }
+      return isJPG
+    }
+    const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
+      createMessage(`上傳圖片ID: ${rawData.data._id}`, 'success')
+    }
     onMounted(() => {
       store.dispatch('fetchColumns')
     })
     return {
-      list
+      list,
+      beforeUpload,
+      onFileUploaded
     }
   }
 })

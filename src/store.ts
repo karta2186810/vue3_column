@@ -1,6 +1,12 @@
 import { Commit, createStore } from 'vuex'
 import axios from 'axios'
 
+export interface ResponseType<P = { [key: string]: any }> {
+  code: number
+  message: string
+  data: P
+}
+
 export interface UserProps {
   isLogin: boolean
   nickName?: string
@@ -12,6 +18,7 @@ export interface UserProps {
 export interface ImageProps {
   _id?: string
   url?: string
+  createAt?: string
 }
 
 export interface ColumnProps {
