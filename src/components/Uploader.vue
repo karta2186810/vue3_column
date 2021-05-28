@@ -1,13 +1,20 @@
 <template>
   <div class="file-upload">
-    <button
-      class="btn btn-primary"
+    <div
+      class="file-upload-container"
       @click.prevent="triggerUpload">
-      <span v-if="fileStatus==='loading'">正在上傳...</span>
-      <span v-else-if="fileStatus==='success'">上傳成功</span>
-      <span v-else-if="fileStatus==='error'">上傳失敗</span>
-      <span v-else>點擊上傳</span>
-    </button>
+      <slot v-if="fileStatus==='loading'" name="loading">
+        <button class="btn btn-primary" disabled>正在上傳...</button>
+      </slot>
+      <slot v-else-if="fileStatus==='success'" name="uploaded" :uploadedData="uploadedData">
+        <button class="btn btn-primary">上傳成功</button>
+      </slot>
+      <slot v-else name="default" >
+        <button class="btn btn-primary">點擊上傳</button>
+      </slot>
+      <!-- <span v-else-if="fileStatus==='error'">上傳失敗</span> -->
+    </div>
+    <button class="btn btn-primary" @click.prevent="handleDelete">刪除圖片</button>
     <input
       type="file"
       class="file-input d-none"
@@ -34,10 +41,11 @@ export default defineComponent({
       type: Function as PropType<CheckFunction>
     }
   },
-  emits: ['file-uploaded', 'file-uploaded-error'],
+  emits: ['file-uploaded', 'file-uploaded-error', 'file-deleted'],
   setup (props, context) {
     const fileInput = ref<null | HTMLInputElement>(null) // 創建ref接收fileInput的DOM節點
     const fileStatus = ref<UploadStatus>('ready') // 創建用來標示上傳的狀態
+    const uploadedData = ref()
     // 給button綁定的事件響應函數
     const triggerUpload = () => {
       // 判斷如果已經拿到fileInput節點
@@ -69,7 +77,7 @@ export default defineComponent({
           const res = await axios.post(props.action, formData, {
             headers: { 'Content-Type': 'multipart/form-data' } // 設置請求頭
           })
-          console.log(res.data)
+          uploadedData.value = res.data
           fileStatus.value = 'success' // 請求成功後，設置上傳狀態為成功
           context.emit('file-uploaded', res.data) // 向外觸發file-uploaded事件
           if (fileInput.value) {
@@ -88,11 +96,19 @@ export default defineComponent({
         }
       }
     }
+    const handleDelete = () => {
+      if (uploadedData.value) {
+        uploadedData.value = ''
+        context.emit('file-deleted')
+      }
+    }
     return {
       fileInput,
       triggerUpload,
       fileStatus,
-      handleFileChange
+      handleFileChange,
+      uploadedData,
+      handleDelete
     }
   }
 })

@@ -4,7 +4,12 @@
       action="/upload"
       :beforeUpload="beforeUpload"
       @file-uploaded="onFileUploaded"
-      ></uploader>
+      @file-deleted="onFileDeleted"
+      >
+      <template #uploaded="dataProps">
+        <img v-if="dataProps.uploadedData" :src="dataProps.uploadedData.data.url" width="500">
+      </template>
+    </uploader>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
@@ -50,13 +55,17 @@ export default defineComponent({
     const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
       createMessage(`上傳圖片ID: ${rawData.data._id}`, 'success')
     }
+    const onFileDeleted = () => {
+      createMessage('圖片已刪除', 'success')
+    }
     onMounted(() => {
       store.dispatch('fetchColumns')
     })
     return {
       list,
       beforeUpload,
-      onFileUploaded
+      onFileUploaded,
+      onFileDeleted
     }
   }
 })
