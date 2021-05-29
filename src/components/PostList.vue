@@ -1,10 +1,10 @@
 <template>
   <div class="post-list">
-    <article v-for="post in list" :key="post._id" class="card mb03 shadow-sm my-3">
+    <article v-for="post in posts" :key="post._id" class="card mb03 shadow-sm my-3">
       <div class="card-body px-5 py-4">
-        <h4 class="fw-bolder">{{ post.title }}</h4>
+        <router-link :to="`/posts/${post._id}`" class="fw-bolder post-title">{{ post.title }}</router-link>
         <div class="row my-3 align-items-center">
-          <div v-if="post.image" class="col-3">
+          <div v-if="post.image && typeof post.image ==='object'" class="col-3">
             <img :src="post.image.url" :alt="post.title" class="rounded-lg w-75">
           </div>
           <p :class="{ 'col-9': post.image }">{{ post.excerpt }}</p>
@@ -20,11 +20,19 @@ import { PostProps } from '../store'
 export default defineComponent({
   name: 'PostList',
   props: {
-    list: {
+    posts: {
       type: Array as PropType<PostProps[]>,
       required: true
     }
   }
 })
 </script>
-<style></style>
+<style lang="scss">
+.post-list {
+  .post-title {
+    text-decoration: none;
+    color: inherit;
+    font-size: 24px;
+  }
+}
+</style>

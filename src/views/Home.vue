@@ -1,15 +1,5 @@
 <template>
   <div class="home-page">
-    <uploader
-      action="/upload"
-      :beforeUpload="beforeUpload"
-      @file-uploaded="onFileUploaded"
-      @file-deleted="onFileDeleted"
-      >
-      <template #uploaded="dataProps">
-        <img v-if="dataProps.uploadedData" :src="dataProps.uploadedData.data.url" width="500">
-      </template>
-    </uploader>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
@@ -29,15 +19,12 @@
 import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import ColumnList from '../components/ColumnList.vue'
-import Uploader from '../components/Uploader.vue'
-import createMessage from '../components/createMessage'
-import { GlobalDataProps, ResponseType, ImageProps } from '../store'
+import { GlobalDataProps } from '../store'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    ColumnList,
-    Uploader
+    ColumnList
   },
   setup () {
     const store = useStore<GlobalDataProps>()
@@ -45,27 +32,11 @@ export default defineComponent({
     const list = computed(() => store.state.columns)
     // store中的getter屬性類似於computed屬性，將store中的數據處理過後進行返回
 
-    const beforeUpload = (file: File) => {
-      const isJPG = file.type === 'image/jpeg'
-      if (!isJPG) {
-        createMessage('上傳圖片格式只能是JPG', 'error')
-      }
-      return isJPG
-    }
-    const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
-      createMessage(`上傳圖片ID: ${rawData.data._id}`, 'success')
-    }
-    const onFileDeleted = () => {
-      createMessage('圖片已刪除', 'success')
-    }
     onMounted(() => {
       store.dispatch('fetchColumns')
     })
     return {
-      list,
-      beforeUpload,
-      onFileUploaded,
-      onFileDeleted
+      list
     }
   }
 })

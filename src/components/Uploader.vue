@@ -2,7 +2,9 @@
   <div class="file-upload">
     <div
       class="file-upload-container"
-      @click.prevent="triggerUpload">
+      @click.prevent="triggerUpload"
+      v-bind="$attrs"
+      >
       <slot v-if="fileStatus==='loading'" name="loading">
         <button class="btn btn-primary" disabled>正在上傳...</button>
       </slot>
@@ -14,7 +16,7 @@
       </slot>
       <!-- <span v-else-if="fileStatus==='error'">上傳失敗</span> -->
     </div>
-    <button class="btn btn-primary" @click.prevent="handleDelete">刪除圖片</button>
+    <!-- <button  class="btn btn-primary" @click.prevent="handleDelete">刪除圖片</button> -->
     <input
       type="file"
       class="file-input d-none"
@@ -41,6 +43,7 @@ export default defineComponent({
       type: Function as PropType<CheckFunction>
     }
   },
+  inheritAttrs: false,
   emits: ['file-uploaded', 'file-uploaded-error', 'file-deleted'],
   setup (props, context) {
     const fileInput = ref<null | HTMLInputElement>(null) // 創建ref接收fileInput的DOM節點
@@ -62,7 +65,7 @@ export default defineComponent({
         // 判斷該節點已經選取檔案
         const files = Array.from(currentTarget.files) // files是一個FileList類型的數據，使用Array.from轉換成普通陣列
         if (props.beforeUpload) {
-          // 如果用戶有船入beforeUpload
+          // 如果用戶有傳入beforeUpload
           const result = props.beforeUpload(files[0]) // 將檔案傳入，檢查檔案是否符合用戶的自定義規則
           if (!result) {
             // 如果result為false
@@ -98,6 +101,9 @@ export default defineComponent({
     }
     const handleDelete = () => {
       if (uploadedData.value) {
+        if (fileInput.value) {
+          fileInput.value.value = ''
+        }
         uploadedData.value = ''
         context.emit('file-deleted')
       }
@@ -113,4 +119,4 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style lang="scss"></style>

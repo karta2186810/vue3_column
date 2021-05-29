@@ -1,5 +1,5 @@
 <template>
-  <form class="validate-form-container w-50 mx-auto my-5" @submit.prevent="submitForm">
+  <form class="validate-form-container w-50 mx-auto my-3" @submit.prevent="submitForm">
     <slot name="default"></slot>
     <div class="submit-area">
       <slot name="submit">

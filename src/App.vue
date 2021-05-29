@@ -18,9 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch, onMounted } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import axios from 'axios'
 import { GlobalDataProps } from './store'
 import GlobalHeader from './components/GlobalHeader.vue'
 import Loader from './components/Loader.vue'
@@ -37,7 +36,6 @@ export default defineComponent({
     const store = useStore<GlobalDataProps>()
     const currentUser = computed(() => store.state.user)
     const isLoading = computed(() => store.state.loading)
-    const token = computed(() => store.state.token)
     const error = computed(() => store.state.error)
 
     // 監視error屬性的變化
@@ -52,12 +50,6 @@ export default defineComponent({
       }
     })
 
-    onMounted(() => {
-      if (!currentUser.value.isLogin && token.value) {
-        axios.defaults.headers.common.Authorization = `Bearer ${token.value}`
-        store.dispatch('fetchCurrentUser')
-      }
-    })
     return {
       currentUser,
       isLoading,

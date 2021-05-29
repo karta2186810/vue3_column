@@ -1,6 +1,18 @@
 import { Commit, createStore } from 'vuex'
 import axios from 'axios'
 
+export interface ImageProps {
+  _id?: string
+  url?: string
+  createAt?: string
+  fitUrl?: string
+}
+
+export interface AvatorProps {
+  _id: string
+  url: string
+}
+
 export interface ResponseType<P = { [key: string]: any }> {
   code: number
   message: string
@@ -15,12 +27,6 @@ export interface UserProps {
   email?: string
 }
 
-export interface ImageProps {
-  _id?: string
-  url?: string
-  createAt?: string
-}
-
 export interface ColumnProps {
   _id: string
   title: string
@@ -28,14 +34,23 @@ export interface ColumnProps {
   description: string
 }
 
-export interface PostProps {
+export interface AuthorProps {
   _id: string
+  email: string
+  nickName: string
+  avatar?: AvatorProps
+  description?: string
+}
+
+export interface PostProps {
+  _id?: string
   title: string
   excerpt?: string
   content?: string
-  image?: ImageProps
-  createdAt: string
+  image?: ImageProps | string
+  createdAt?: string
   column: string
+  author?: AuthorProps | string
 }
 
 export interface GlobalErrorProps {
@@ -56,6 +71,7 @@ export interface GlobalDataProps {
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
   commit(mutationName, data)
+  return data
 }
 const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
   const { data } = await axios.post(url, payload)
@@ -88,6 +104,9 @@ const store = createStore<GlobalDataProps>({
     fetchPosts (state, rawData) {
       state.posts = rawData.data.list
     },
+    fetchPost (state, rawData) {
+      state.posts = [rawData.data]
+    },
     setLoading (state, status) {
       state.loading = status
     },
@@ -114,13 +133,16 @@ const store = createStore<GlobalDataProps>({
   // action中的方法會接收到context裡面有store中的屬性及方法，使用commit提交一個mutation
   actions: {
     fetchColumns ({ commit }) {
-      getAndCommit('/columns', 'fetchColumns', commit)
+      return getAndCommit('/columns?currentPage=1&pageSize=6', 'fetchColumns', commit)
     },
     fetchColumn ({ commit }, cid) {
-      getAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
+      return getAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
     },
     fetchPosts ({ commit }, cid) {
-      getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
+      return getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
+    },
+    fetchPost ({ commit }, cid) {
+      return getAndCommit(`/posts/${cid}`, 'fetchPost', commit)
     },
     login ({ commit }, payload) {
       return postAndCommit('/user/login', 'login', commit, payload)
@@ -131,18 +153,24 @@ const store = createStore<GlobalDataProps>({
     async loginAndFetch ({ dispatch }, loginData) {
       await dispatch('login', loginData)
       return await dispatch('fetchCurrentUser')
+    },
+    createPost ({ commit }, payload) {
+      postAndCommit('/posts', 'createPost', commit, payload)
     }
   },
   // 相當於computed
   getters: {
     // 如果getter需要進行參數的接收可以使用函數柯里化的形式
-    getColumnsById: state => (id: string) => {
+    getColumnsById: state => (cid: string) => {
       if (state.columns) {
-        return state.columns.find(c => c._id === id)
+        return state.columns.find(c => c._id === cid)
       }
     },
     getPostsByCid: state => (cid: string) => {
       return state.posts.filter(post => post.column === cid)
+    },
+    getPostByCid: state => (cid: string) => {
+      return state.posts.find(c => c._id === cid)
     }
   }
 })
