@@ -4,18 +4,16 @@
       v-if="tag !== 'textarea'"
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
-      :value = "inputRef.val"
       @blur="validateInput"
-      @input="updateValue"
+      v-model="inputRef.val"
       v-bind="$attrs"
     >
     <textarea
       v-else
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
-      :value = "inputRef.val"
       @blur="validateInput"
-      @input="updateValue"
+      v-model="inputRef.val"
       v-bind="$attrs"
     >
     </textarea>
@@ -24,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType, onMounted } from 'vue'
+import { defineComponent, reactive, PropType, onMounted, computed } from 'vue'
 import { emitter } from './ValidateForm.vue'
 
 // email驗證正則表達式
@@ -58,7 +56,12 @@ export default defineComponent({
   setup (props, context) {
     // 因為需要包含多筆屬性，所以使用reactive創建物件
     const inputRef = reactive({
-      val: props.modelValue || '',
+      val: computed({
+        get: () => props.modelValue || '',
+        set: val => {
+          context.emit('update:modelValue', val)
+        }
+      }),
       error: false,
       message: ''
     })
@@ -97,12 +100,6 @@ export default defineComponent({
       return true
     }
 
-    const updateValue = (e: KeyboardEvent) => {
-      const targetValue = (e.target as HTMLInputElement).value
-      inputRef.val = targetValue
-      context.emit('update:modelValue', targetValue)
-    }
-
     const inputReset = () => {
       inputRef.val = ''
       context.emit('update:modelValue', '')
@@ -114,8 +111,7 @@ export default defineComponent({
     })
     return {
       inputRef,
-      validateInput,
-      updateValue
+      validateInput
     }
   }
 })

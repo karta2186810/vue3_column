@@ -4,26 +4,23 @@
     <div>
       <h5 class="mb-0">{{ user.nickName }}</h5>
       <p v-if="user.description" class="text-secondary text-secondary mb-0">{{ user.description }}</p>
-      <p v-else class="text-secondary mb-0">say something</p>
+      <p v-else class="text-secondary mt-1 mb-0">還沒有任何介紹哦!</p>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import { AuthorProps } from '../store'
+import { defineComponent, PropType, computed, onMounted } from 'vue'
+import { UserProps } from '../store'
 export default defineComponent({
   name: 'UserProfile',
   props: {
     user: {
-      type: Object as PropType<AuthorProps>,
+      type: Object as PropType<UserProps>,
       required: true
     }
-    // avatar: {
-    //   type: String,
-    //   required: true
-    // }
   },
   setup (props) {
+    console.log(props.user)
     const fitUrl = computed(() => {
       if (props.user.avatar) {
         return props.user.avatar.url

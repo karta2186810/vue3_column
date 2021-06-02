@@ -26,7 +26,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import axios from 'axios'
 
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
@@ -41,14 +41,23 @@ export default defineComponent({
     },
     beforeUpload: {
       type: Function as PropType<CheckFunction>
+    },
+    uploaded: {
+      type: Object
     }
   },
   inheritAttrs: false,
   emits: ['file-uploaded', 'file-uploaded-error', 'file-deleted'],
   setup (props, context) {
     const fileInput = ref<null | HTMLInputElement>(null) // 創建ref接收fileInput的DOM節點
-    const fileStatus = ref<UploadStatus>('ready') // 創建用來標示上傳的狀態
-    const uploadedData = ref()
+    const fileStatus = ref<UploadStatus>(props.uploaded ? 'success' : 'ready') // 創建用來標示上傳的狀態
+    const uploadedData = ref(props.uploaded)
+    watch(() => props.uploaded, newValue => {
+      if (newValue) {
+        fileStatus.value = 'success'
+        uploadedData.value = newValue
+      }
+    })
     // 給button綁定的事件響應函數
     const triggerUpload = () => {
       // 判斷如果已經拿到fileInput節點
@@ -104,7 +113,7 @@ export default defineComponent({
         if (fileInput.value) {
           fileInput.value.value = ''
         }
-        uploadedData.value = ''
+        uploadedData.value = {}
         context.emit('file-deleted')
       }
     }

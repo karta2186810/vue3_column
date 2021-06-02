@@ -2,7 +2,7 @@
   <div class="column-detail-page w-75 mx-auto">
     <div class="column-info row mb-4 border-bottom pb-4 align-items-center" v-if="column">
       <div class="col-3 text-center">
-        <img :src="column.avatar && column.avatar.fitUrl" :alt="column.title" class="rounded-circle border w-50">
+        <img :src="column.avatar && column.avatar.url" :alt="column.title" class="rounded-circle border w-50">
       </div>
       <div class="col-9">
         <h4>{{column.title}}</h4>
@@ -10,6 +10,7 @@
       </div>
     </div>
     <post-list :posts="posts"></post-list>
+    <button class="btn btn-outline-primary w-25 mx-auto d-block mb-3">加載更多</button>
   </div>
 </template>
 <script lang="ts">
@@ -18,7 +19,6 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps, ColumnProps } from '../store'
 import PostList from '../components/PostList.vue'
-import { generateFitURL } from '../helpers'
 export default defineComponent({
   name: 'ColumnDetail',
   components: {
@@ -36,12 +36,13 @@ export default defineComponent({
     })
     const column = computed(() => {
       const selectColumn = store.getters.getColumnsById(currentId) as ColumnProps
-      if (selectColumn) {
-        generateFitURL(selectColumn)
+      if (selectColumn && !selectColumn.avatar) {
+        selectColumn.avatar = { url: require('@/assets/column.jpg') }
       }
       return selectColumn
     })
     const posts = computed(() => store.getters.getPostsByCid(currentId))
+
     return {
       column,
       posts

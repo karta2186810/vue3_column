@@ -12,7 +12,8 @@
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
         <drop-down :title="`你好 ${user.nickName}`">
-          <drop-down-item><router-link to="/create" class="dropdown-item">新建文章</router-link></drop-down-item>
+          <drop-down-item><router-link  to="/create" class="dropdown-item">新建文章</router-link></drop-down-item>
+          <drop-down-item><router-link :to="`/column/${user.column}`" class="dropdown-item">我的專欄</router-link></drop-down-item>
           <drop-down-item disabled><a href="#" class="dropdown-item">編輯資料</a></drop-down-item>
           <drop-down-item><a href="#" class="dropdown-item" @click="logout">退出登入</a></drop-down-item>
         </drop-down>
