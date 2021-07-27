@@ -60,23 +60,12 @@ interface ListProps<P> {
 export interface GlobalDataProps {
   token: string
   columns: { currentPage: number, data: ListProps<ColumnProps>, total: number }
-  posts: { loadedColumns: string[], data: ListProps<PostProps>, total: number, currentPage: number }
+  posts: { loadedColumns: ListProps<{ currentPage: number; total: number }>, data: ListProps<PostProps> }
   user: UserProps
   loading: boolean
   error: GlobalErrorProps
 }
 
-// 將重複性的AJAX請求代碼進行封裝
-/* const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
-  const { data } = await axios.get(url)
-  commit(mutationName, data)
-  return data
-}
-const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
-  const { data } = await axios.post(url, payload)
-  commit(mutationName, data)
-  return data
-} */
 const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,
   config: AxiosRequestConfig = { method: 'GET' }, extraData?: any) => {
   const { data } = await axios(url, config)
@@ -89,11 +78,10 @@ const asyncAndCommit = async (url: string, mutationName: string, commit: Commit,
 }
 
 const store = createStore<GlobalDataProps>({
-  // 儲存數據的地方
   state: {
     token: localStorage.getItem('token') || '',
     columns: { data: {}, currentPage: 0, total: 0 },
-    posts: { data: {}, loadedColumns: [], currentPage: 0, total: 0 },
+    posts: { data: {}, loadedColumns: {} },
     user: { isLogin: false },
     loading: false,
     error: { status: false }
@@ -117,8 +105,11 @@ const store = createStore<GlobalDataProps>({
       state.columns.data[rawData.data._id] = rawData.data
     },
     fetchPosts (state, { data: rawData, extraData: columnId }) {
-      state.posts.data = { ...state.posts.data, ...arrToObj(rawData.data.list) }
-      state.posts.loadedColumns.push(columnId)
+      const { data } = state.posts
+      const { list, count, currentPage } = rawData.data
+      const listData = list as PostProps[]
+      state.posts.data = { ...data, ...arrToObj(listData) }
+      state.posts.loadedColumns[columnId] = { currentPage, total: count }
     },
     fetchPost (state, rawData) {
       state.posts.data[rawData.data._id] = rawData.data
@@ -144,6 +135,9 @@ const store = createStore<GlobalDataProps>({
     fetchCurrentUser (state, rawData) {
       state.user = { isLogin: true, ...rawData.data }
     },
+    editUserProfile (state, rawData) {
+      state.user = { ...state.user, ...rawData.data }
+    },
     logout (state) {
       state.user = { isLogin: false }
       state.token = ''
@@ -168,13 +162,25 @@ const store = createStore<GlobalDataProps>({
         return asyncAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
       }
     },
-    fetchPosts ({ state, commit }, cid) {
-      if (!state.posts.loadedColumns.includes(cid)) {
-        return asyncAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit, { method: 'GET' }, cid)
+    fetchPosts ({ state, commit }, params) {
+      // 取出傳遞過來的參數
+      const { columnId, currentPage = 1, pageSize = 5 } = params
+      // 取出代表已經讀取的專欄的物件
+      const { loadedColumns } = state.posts
+      // 如果專欄存在，則返回該專欄的當前頁數，否則初始化為0
+      const loadedCurrentPage = (loadedColumns[columnId] && loadedColumns[columnId].currentPage) || 0
+      // 判斷loadedColumns中是否已經讀取該專欄，或是該專欄當前頁面小於要請求的當前頁面
+      if (!Object.keys(loadedColumns).includes(columnId) || loadedCurrentPage < currentPage) {
+        // 發送請求
+        return asyncAndCommit(`/columns/${columnId}/posts?currentPage=${currentPage}&pageSize=${pageSize}`, 'fetchPosts', commit, { method: 'GET' }, columnId)
       }
     },
     fetchPost ({ state, commit }, cid) {
-      const currentPost = state.posts.data[cid]
+      // 取出Posts中的文章
+      const { data } = state.posts
+      // 將代表當前id的文章取出
+      const currentPost = data[cid]
+      // 如果不存在當前文章，或是該文章沒有內容
       if (!currentPost || !currentPost.content) {
         return asyncAndCommit(`/posts/${cid}`, 'fetchPost', commit)
       } else {
@@ -196,6 +202,10 @@ const store = createStore<GlobalDataProps>({
     async loginAndFetch ({ dispatch }, loginData) {
       await dispatch('login', loginData)
       return await dispatch('fetchCurrentUser')
+    },
+    editUserProfile ({ commit }, payload) {
+      const { userId } = payload
+      return asyncAndCommit(`/user/${userId}`, 'editUserProfile', commit, { method: 'PATCH', data: payload.data })
     },
     createPost ({ commit }, payload) {
       asyncAndCommit('/posts', 'createPost', commit, { method: 'POST', data: payload })
@@ -220,6 +230,20 @@ const store = createStore<GlobalDataProps>({
     },
     getPostByCid: state => (cid: string) => {
       return state.posts.data[cid]
+    },
+    getTotalByCid: state => (cid: string) => {
+      if (state.posts.loadedColumns[cid]) {
+        return state.posts.loadedColumns[cid].total
+      } else {
+        return 0
+      }
+    },
+    getCurrentPageByCid: state => (cid: string) => {
+      if (state.posts.loadedColumns[cid]) {
+        return state.posts.loadedColumns[cid].currentPage
+      } else {
+        return 0
+      }
     }
   }
 })

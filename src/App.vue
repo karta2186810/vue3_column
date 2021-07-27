@@ -1,6 +1,6 @@
 <template>
+  <global-header :user="currentUser"></global-header>
   <div class="container">
-      <global-header :user="currentUser"></global-header>
       <loader v-if="isLoading" text="加載中" background="rgba(0,0,0,.8)"></loader>
       <router-view :key="$route.fullPath"></router-view>
       <footer class="text-center py-4 text-secondary bg-light mt-6">

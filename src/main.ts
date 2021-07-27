@@ -9,14 +9,14 @@ axios.defaults.baseURL = 'http://apis.imooc.com/api/'
 // 利用攔截器在每次請求前加上imooc的code
 axios.interceptors.request.use(config => {
   // get 请求，添加到 url 中
-  config.params = { ...config.params, icode: '66009976EB10AF9E' }
+  config.params = { ...config.params, icode: 'D7370AA5B92D4586' }
   // 其他请求，添加到 body 中
   // 如果是上传文件，添加到 FormData 中
   if (config.data instanceof FormData) {
-    config.data.append('icode', '66009976EB10AF9E')
+    config.data.append('icode', 'D7370AA5B92D4586')
   } else {
   // 普通的 body 对象，添加到 data 中
-    config.data = { ...config.data, icode: '66009976EB10AF9E' }
+    config.data = { ...config.data, icode: 'D7370AA5B92D4586' }
   }
   return config
 })

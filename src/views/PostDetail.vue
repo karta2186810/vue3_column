@@ -22,7 +22,7 @@
     <div v-if="showEditArea()" class="bnt-group my-5">
       <router-link
         type="button"
-        class="btn btn-primary"
+        class="btn btn-primary me-1"
         :to="{ name: 'create', query: { id: currentPost._id }}"
         >編輯</router-link>
       <button

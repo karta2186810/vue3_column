@@ -40,6 +40,7 @@ export default defineComponent({
     width: 50px;
     height: 50px;
     margin-right: 16px;
+    object-fit: cover;
     border-radius: 50%;
   }
 }

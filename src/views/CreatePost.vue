@@ -1,5 +1,5 @@
 <template>
-  <div class="create-post-page">
+  <div class="create-post-page py-5">
     <h4 class="text-center fw-bolder">{{ isEditMode? '編輯文章': '新建文章' }}</h4>
     <uploader
       action="/upload"
@@ -16,7 +16,7 @@
         </div>
       </template>
       <template #uploaded="dataProps">
-        <img :src="dataProps.uploadedData.data.url" alt="">
+        <img :src="dataProps.uploadedData.data.url" alt="文章封面">
       </template>
       </uploader>
     <validate-form @form-submit="onFormSubmit">

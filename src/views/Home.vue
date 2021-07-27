@@ -6,7 +6,7 @@
           <img src="../assets/callout.svg" alt="callout" class="w-50"/>
           <h2 class="font-weight-light mt-5">隨心寫作，自由表達</h2>
           <p>
-            <a href="#" class="btn btn-primary my-3 fw-bolder">開始寫作</a>
+            <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
           </p>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default defineComponent({
     const total = computed(() => store.state.columns.total)
     const currentPage = computed(() => store.state.columns.currentPage)
 
-    const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { pageSize: 3, currentPage: currentPage.value ? currentPage.value + 1 : 2 })
+    const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { currentPage: currentPage.value ? currentPage.value : 2, pageSize: 3 })
 
     onMounted(() => {
       store.dispatch('fetchColumns', { pageSize: 3 })
