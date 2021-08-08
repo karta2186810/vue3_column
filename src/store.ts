@@ -89,8 +89,8 @@ const store = createStore<GlobalDataProps>({
   // 在mutation內進行數據的操作
   mutations: {
     // mutations對應組件commit的事件，可以接收到commit第二個參數傳過來的數據，這裡是newPost
-    createPost (state, newPost) {
-      state.posts.data[newPost._id] = newPost
+    createPost (state, { data }) {
+      state.posts.data[data._id] = data
     },
     fetchColumns (state, rawData) {
       const { data } = state.columns
