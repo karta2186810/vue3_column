@@ -71,21 +71,32 @@ export default defineComponent({
       console.log(uploadedData.value)
     }
     // 表單送出事件
-    const onFormSubmit = () => {
-      const sendData = {
-        description: descVal.value,
-        nickName: nameVal.value,
-        avatar: {
-          _id: uploadedData.value.data._id,
-          url: uploadedData.value.data.url
+    const onFormSubmit = (result: boolean) => {
+      if (result) {
+        let sendData
+        if (uploadedData.value) {
+          sendData = {
+            description: descVal.value,
+            nickName: nameVal.value,
+            avatar: {
+              _id: uploadedData.value.data._id,
+              url: uploadedData.value.data.url
+            }
+          }
+        } else {
+          sendData = {
+            description: descVal.value,
+            nickName: nameVal.value
+          }
         }
+
+        store.dispatch('editUserProfile', { userId: storeUser.value._id, data: sendData }).then(() => {
+          createMessage('資料更新完成，2秒後跳轉至首頁', 'success', 2000)
+          setTimeout(() => {
+            router.push('/')
+          }, 2000)
+        })
       }
-      store.dispatch('editUserProfile', { userId: storeUser.value._id, data: sendData }).then(() => {
-        createMessage('資料更新完成，2秒後跳轉至首頁', 'success', 2000)
-        setTimeout(() => {
-          router.push('/')
-        }, 2000)
-      })
     }
     return {
       onFormSubmit,
