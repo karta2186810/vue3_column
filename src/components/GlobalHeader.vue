@@ -1,5 +1,5 @@
 <template>
-  <nav class="header-fixed navbar navbar-dark bg-primary justifiy-content-between mb-4 px-4">
+  <nav class="navbar navbar-dark bg-primary justifiy-content-between mb-4 px-4">
     <router-link to="/" class="navbar-brand">者也專欄</router-link>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
       <li class="list-inline-item">
@@ -55,8 +55,4 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-.header-fixed {
-  width: 100%;
-  z-index: 1000;
-}
 </style>

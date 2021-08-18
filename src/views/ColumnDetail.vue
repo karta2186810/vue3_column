@@ -9,7 +9,11 @@
         <p class="text-muted">{{column.description}}</p>
       </div>
     </div>
-    <post-list :posts="posts"></post-list>
+    <post-list v-if="posts.length" :posts="posts"></post-list>
+    <div v-else class="post-list-fallback p-3">
+      <h4>你還沒有文章哦</h4>
+      <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
+    </div>
     <button
       class="btn btn-outline-primary w-25 mx-auto d-block mb-3"
       v-if="!isLastPage"
@@ -63,4 +67,17 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style scoped lang="scss">
+.column-detail-page {
+  min-height: 480px;
+  .post-list-fallback {
+    color: #555;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

@@ -26,7 +26,7 @@ const useLoadMore = (actionName: string, total: ComputedRef<number>, params: Loa
     })
   }
   const isLastPage = computed(() => {
-    return (requestParams.value.pageSize * (currentPage.value - 1)) >= total.value
+    return (requestParams.value.pageSize * (currentPage.value - 1)) > total.value
   })
   return {
     loadMorePage,

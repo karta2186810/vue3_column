@@ -1,19 +1,21 @@
 <template>
-  <global-header :user="currentUser"></global-header>
-  <div class="container">
+  <div class="wrapper">
+    <global-header :user="currentUser"></global-header>
+    <div class="container">
       <loader v-if="isLoading" text="加載中" background="rgba(0,0,0,.8)"></loader>
       <router-view :key="$route.fullPath"></router-view>
-      <footer class="text-center py-4 text-secondary bg-light mt-6">
-        <small>
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item">2021 者也專欄</li>
-            <li class="list-inline-item">課程</li>
-            <li class="list-inline-item">文檔</li>
-            <li class="list-inline-item">聯繫</li>
-            <li class="list-inline-item">更多</li>
-          </ul>
-        </small>
-      </footer>
+    </div>
+    <footer class="footer text-center py-4 text-secondary bg-light mt-6">
+      <small>
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item">2021 者也專欄</li>
+          <li class="list-inline-item">課程</li>
+          <li class="list-inline-item">文檔</li>
+          <li class="list-inline-item">聯繫</li>
+          <li class="list-inline-item">更多</li>
+        </ul>
+      </small>
+    </footer>
   </div>
 </template>
 
@@ -59,6 +61,5 @@ export default defineComponent({
 })
 </script>
 
-<style lang="sass">
-
+<style lang="scss">
 </style>
