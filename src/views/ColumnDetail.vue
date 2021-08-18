@@ -11,7 +11,8 @@
     </div>
     <post-list v-if="posts.length" :posts="posts"></post-list>
     <div v-else class="post-list-fallback p-3">
-      <h4>你還沒有文章哦</h4>
+      <img src="../assets/callout.svg" alt="callout" class="w-25"/>
+      <h4 class="mt-5">你還沒有文章哦</h4>
       <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
     </div>
     <button
@@ -25,7 +26,7 @@
 import { defineComponent, computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { GlobalDataProps, ColumnProps } from '../store'
+import { GlobalDataProps, ColumnProps } from '@/store'
 import PostList from '../components/PostList.vue'
 import useLoadMore from '../hooks/useLoadMore'
 export default defineComponent({
