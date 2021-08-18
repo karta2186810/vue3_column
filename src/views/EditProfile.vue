@@ -61,14 +61,13 @@ export default defineComponent({
     const router = useRouter()
     const uploadedData = ref()
     const storeUser = computed(() => store.state.user)
-    const descVal = ref(storeUser.value && storeUser.value.description)
-    const nameVal = ref(storeUser.value && storeUser.value.nickName)
+    const descVal = computed(() => storeUser.value && storeUser.value.description)
+    const nameVal = computed(() => storeUser.value && storeUser.value.nickName)
     const nameRule: RulesProp = [{ type: 'required', message: '暱稱不能為空' }]
     const descRule: RulesProp = [{ type: 'required', message: '介紹不能為空' }]
     // 圖片上傳完成事件
     const onFileUploaded = (newAvator: AvatorProps) => {
       uploadedData.value = newAvator
-      console.log(uploadedData.value)
     }
     // 表單送出事件
     const onFormSubmit = (result: boolean) => {

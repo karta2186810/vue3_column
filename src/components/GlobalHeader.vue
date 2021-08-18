@@ -14,7 +14,8 @@
         <drop-down :title="`你好 ${user.nickName}`">
           <drop-down-item><router-link  to="/create" class="dropdown-item">新建文章</router-link></drop-down-item>
           <drop-down-item><router-link :to="`/column/${user.column}`" class="dropdown-item">我的專欄</router-link></drop-down-item>
-          <drop-down-item><router-link to="/edit" class="dropdown-item">編輯資料</router-link></drop-down-item>
+          <drop-down-item><router-link to="/edit-profile" class="dropdown-item">編輯資料</router-link></drop-down-item>
+          <drop-down-item><router-link to="/edit-column" class="dropdown-item">編輯專欄</router-link></drop-down-item>
           <drop-down-item><a href="#" class="dropdown-item" @click="logout">退出登入</a></drop-down-item>
         </drop-down>
       </li>

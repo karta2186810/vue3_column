@@ -86,9 +86,7 @@ const store = createStore<GlobalDataProps>({
     loading: false,
     error: { status: false }
   },
-  // 在mutation內進行數據的操作
   mutations: {
-    // mutations對應組件commit的事件，可以接收到commit第二個參數傳過來的數據，這裡是newPost
     createPost (state, { data }) {
       state.posts.data[data._id] = data
     },
@@ -145,14 +143,10 @@ const store = createStore<GlobalDataProps>({
       delete axios.defaults.headers.common.Authorization
     }
   },
-  // 異步的操作都在action中執行
-  // action中的方法會接收到context裡面有store中的屬性及方法，使用commit提交一個mutation
   actions: {
     fetchColumns ({ state, commit }, params = {}) {
       const { currentPage = 1, pageSize = 6 } = params
-      /* if (!state.columns.isLoaded) {
-        return asyncAndCommit('/columns?currentPage=1&pageSize=6', 'fetchColumns', commit)
-      } */
+
       if (state.columns.currentPage < currentPage) {
         return asyncAndCommit(`/columns?currentPage=${currentPage}&pageSize=${pageSize}`, 'fetchColumns', commit)
       }

@@ -47,8 +47,8 @@ const router = createRouter({
       component: PostDetail
     },
     {
-      path: '/edit',
-      name: 'edit',
+      path: '/edit-profile',
+      name: 'edit-profile',
       component: EditProfile,
       meta: { requiredLogin: true }
     }
