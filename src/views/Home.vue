@@ -40,7 +40,7 @@ export default defineComponent({
     const total = computed(() => store.state.columns.total)
     const currentPage = computed(() => store.state.columns.currentPage)
 
-    const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { currentPage: currentPage.value ? currentPage.value : 2, pageSize: 3 })
+    const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { currentPage: currentPage.value ? currentPage.value : 1, pageSize: 3 })
 
     onMounted(() => {
       store.dispatch('fetchColumns', { pageSize: 3 })

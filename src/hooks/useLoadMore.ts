@@ -15,18 +15,21 @@ const useLoadMore = (actionName: string, total: ComputedRef<number>, params: Loa
   // 使用store
   const store = useStore()
   // 將params中的currentPage取出，並將其轉換響應式物件
-  const currentPage = ref((params && params.currentPage) || 2)
+  const currentPage = ref((params && params.currentPage) || 1)
   const requestParams = computed(() => ({
     ...params,
-    currentPage: currentPage.value
+    currentPage: currentPage.value + 1
   }))
   const loadMorePage = () => {
     store.dispatch(actionName, requestParams.value).then(() => {
       currentPage.value++
     })
   }
+  // const isLastPage = computed(() => {
+  //   return (requestParams.value.pageSize * (currentPage.value - 1)) >= total.value
+  // })
   const isLastPage = computed(() => {
-    return (requestParams.value.pageSize * (currentPage.value - 1)) > total.value
+    return Math.ceil((total.value || 1) / params.pageSize) === currentPage.value
   })
   return {
     loadMorePage,

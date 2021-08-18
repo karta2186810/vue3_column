@@ -18,7 +18,7 @@
       <template #uploaded="dataProps">
         <img :src="dataProps.uploadedData.data.url" alt="文章封面">
       </template>
-      </uploader>
+    </uploader>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label fw-bolder">文章標題:</label>
@@ -162,6 +162,7 @@ export default defineComponent({
   .file-upload-container {
     height: 200px;
     cursor: pointer;
+    border: 1px solid #efefef;
     img {
       width: 100%;
       height: 100%;

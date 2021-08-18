@@ -9,7 +9,7 @@ export interface ImageProps {
   fitUrl?: string
 }
 
-export interface AvatorProps {
+export interface AvatarProps {
   _id: string
   url: string
 }
@@ -26,8 +26,8 @@ export interface UserProps {
   _id?: string
   column?: string
   email?: string
-  avatar?: AvatorProps
-  description?: string
+  avatar?: AvatarProps
+  description?: string | unknown
 }
 
 export interface ColumnProps {
@@ -136,6 +136,12 @@ const store = createStore<GlobalDataProps>({
     editUserProfile (state, rawData) {
       state.user = { ...state.user, ...rawData.data }
     },
+    editUserColumn (state, rawData) {
+      const { _id } = rawData
+      let currentColumn = state.columns.data[_id]
+      currentColumn = rawData
+      console.log(rawData)
+    },
     logout (state) {
       state.user = { isLogin: false }
       state.token = ''
@@ -201,6 +207,10 @@ const store = createStore<GlobalDataProps>({
       const { userId } = payload
       return asyncAndCommit(`/user/${userId}`, 'editUserProfile', commit, { method: 'PATCH', data: payload.data })
     },
+    editUserColumn ({ commit }, payload) {
+      const { columnId, data } = payload
+      return asyncAndCommit(`/columns/${columnId}`, 'editUserColumn', commit, { method: 'PATCH', data })
+    },
     createPost ({ commit }, payload) {
       asyncAndCommit('/posts', 'createPost', commit, { method: 'POST', data: payload })
     },
@@ -212,6 +222,9 @@ const store = createStore<GlobalDataProps>({
   getters: {
     getColumns: state => {
       return objToArr(state.columns.data).filter(column => column._id !== state.user.column)
+    },
+    getColumnById: state => (id: string) => {
+      return state.columns.data[id]
     },
     // 如果getter需要進行參數的接收可以使用函數柯里化的形式
     getColumnsById: state => (id: string) => {

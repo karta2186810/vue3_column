@@ -1,5 +1,6 @@
 <template>
   <div class="edit-profile">
+    <h3 class="my-5">編輯資料</h3>
     <uploader
       action="/upload"
       class="w-50 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5"
@@ -18,14 +19,14 @@
     <validate-form
       @form-submit="onFormSubmit"
       >
-      <label class="fw-bolder mb-1">暱稱:</label>
+      <label class="mb-1">用戶暱稱:</label>
       <validate-input
         placeholder="請輸入暱稱"
         v-model="nameVal"
         type="text"
         :rules="nameRule"
       ></validate-input>
-      <label class="fw-bolder mb-1">介紹:</label>
+      <label class="mb-1">用戶介紹:</label>
       <validate-input
         placeholder="請輸入介紹"
         v-model="descVal"
@@ -40,10 +41,10 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { GlobalDataProps, AvatorProps } from '../store'
+import { GlobalDataProps, AvatarProps, UserProps } from '../store'
 import Uploader from '../components/Uploader.vue'
 import ValidateForm from '../components/ValidateForm.vue'
 import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
@@ -57,17 +58,25 @@ export default defineComponent({
     Uploader
   },
   setup () {
+    // store
     const store = useStore<GlobalDataProps>()
     const router = useRouter()
     const uploadedData = ref()
-    const storeUser = computed(() => store.state.user)
-    const descVal = computed(() => storeUser.value && storeUser.value.description)
-    const nameVal = computed(() => storeUser.value && storeUser.value.nickName)
+    const storeUser = computed<UserProps>(() => store.state.user)
+    const descVal = ref(storeUser.value && storeUser.value.description)
+    const nameVal = ref(storeUser.value && storeUser.value.nickName)
+    watch(storeUser, () => {
+      if (storeUser.value) {
+        descVal.value = storeUser.value.description
+        nameVal.value = storeUser.value.nickName
+      }
+    })
+    // 輸入框規則
     const nameRule: RulesProp = [{ type: 'required', message: '暱稱不能為空' }]
     const descRule: RulesProp = [{ type: 'required', message: '介紹不能為空' }]
     // 圖片上傳完成事件
-    const onFileUploaded = (newAvator: AvatorProps) => {
-      uploadedData.value = newAvator
+    const onFileUploaded = (newAvatar: AvatarProps) => {
+      uploadedData.value = newAvatar
     }
     // 表單送出事件
     const onFormSubmit = (result: boolean) => {
@@ -111,6 +120,9 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .edit-profile {
+  h3 {
+    text-align: center;
+  }
   .circle {
     width: 200px;
     height: 200px;

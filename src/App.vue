@@ -4,6 +4,11 @@
     <div class="container">
       <loader v-if="isLoading" text="加載中" background="rgba(0,0,0,.8)"></loader>
       <router-view :key="$route.fullPath"></router-view>
+<!--      <router-view v-slot="{ Component }" :key="$route.fullPath">-->
+<!--        <transition name="slide" appear>-->
+<!--            <component :is="Component"/>-->
+<!--        </transition>-->
+<!--      </router-view>-->
     </div>
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -62,4 +67,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.slide-enter-active, .slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter-from, .slide-leave-to {
+  transform: translateX(100%);
+}
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .container {
+    flex: 1;
+  }
+}
 </style>

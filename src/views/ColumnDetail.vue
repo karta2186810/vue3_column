@@ -1,17 +1,17 @@
 <template>
   <div class="column-detail-page w-75 mx-auto">
-    <div class="column-info row mb-4 border-bottom pb-4 align-items-center" v-if="column">
+    <div class="column-info row mb-4 border-bottom pb-4" v-if="column">
       <div class="col-3 text-center">
-        <img :src="column.avatar && column.avatar.url" :alt="column.title" class="rounded-circle border w-50">
+        <img :src="column.avatar && column.avatar.url" :alt="column.title" class="column-avatar rounded-circle">
       </div>
-      <div class="col-9">
-        <h4>{{column.title}}</h4>
-        <p class="text-muted">{{column.description}}</p>
+      <div class="d-flex flex-column col-9">
+        <h4 class="column-title my-0">{{column.title}}</h4>
+        <p class="text-muted my-0 mt-1">{{column.description}}</p>
       </div>
     </div>
     <post-list v-if="posts.length" :posts="posts"></post-list>
-    <div v-else class="post-list-fallback p-3">
-      <img src="../assets/callout.svg" alt="callout" class="w-25"/>
+    <div v-else class="post-list-fallback my-3 col-6 mx-auto">
+      <img src="../assets/callout.svg" alt="callout" class="w-50"/>
       <h4 class="mt-5">你還沒有文章哦</h4>
       <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
     </div>
@@ -70,11 +70,20 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .column-detail-page {
-  min-height: 480px;
+   .column-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .column-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #999;
+  }
   .post-list-fallback {
     color: #555;
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;

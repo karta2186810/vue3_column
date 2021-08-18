@@ -20,7 +20,6 @@ export default defineComponent({
     }
   },
   setup (props) {
-    console.log(props.user)
     const fitUrl = computed(() => {
       if (props.user.avatar) {
         return props.user.avatar.url

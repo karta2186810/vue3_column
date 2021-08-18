@@ -8,6 +8,7 @@ import ColumnDetail from './views/ColumnDetail.vue'
 import CreatePost from './views/CreatePost.vue'
 import PostDetail from './views/PostDetail.vue'
 import EditProfile from './views/EditProfile.vue'
+import EditColumn from './views/EditColumn.vue'
 
 const routerHistory = createWebHashHistory()
 const router = createRouter({
@@ -50,6 +51,12 @@ const router = createRouter({
       path: '/edit-profile',
       name: 'edit-profile',
       component: EditProfile,
+      meta: { requiredLogin: true }
+    },
+    {
+      path: '/edit-column',
+      name: 'edit-column',
+      component: EditColumn,
       meta: { requiredLogin: true }
     }
   ]
