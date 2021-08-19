@@ -65,7 +65,6 @@ export default defineComponent({
         }
         try {
           const data = await store.dispatch('loginAndFetch', payload)
-          console.log(data)
           router.push('/')
         } catch (e) {
           // catch會接收到由axios攔截器拋出的錯誤

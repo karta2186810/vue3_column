@@ -5,7 +5,7 @@ import store from './store'
 import App from './App.vue'
 
 // 進行axios基本路徑的設定
-axios.defaults.baseURL = 'http://apis.imooc.com/api/'
+axios.defaults.baseURL = 'https://apis.imooc.com/api/'
 // 利用攔截器在每次請求前加上imooc的code
 axios.interceptors.request.use(config => {
   // get 请求，添加到 url 中

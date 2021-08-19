@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentPost" class="detail-page w-75 mx-auto">
+  <div v-if="currentPost" class="detail-page col-lg-8 mx-auto">
     <modal
       title="刪除文章"
       :visible="isModalVisible"
@@ -18,7 +18,7 @@
       </div>
       <span class="text-muted post-create">發表於: {{ currentPost.createdAt }}</span>
     </div>
-    <div v-html="currentHTML" class="post-contant"></div>
+    <div v-html="currentHTML" class="post-content"></div>
     <div v-if="showEditArea()" class="bnt-group my-5">
       <router-link
         type="button"
@@ -79,7 +79,6 @@ export default defineComponent({
     const hideAndDelete = () => {
       closeModal()
       store.dispatch('deletePost', currentId).then((rawData: ResponseType<PostProps>) => {
-        console.log(rawData)
         createMessage('刪除成功，2秒後跳轉到專欄首頁', 'success', 2000)
         setTimeout(() => {
           router.push({ name: 'column', params: { id: rawData.data.column } })
@@ -118,8 +117,9 @@ export default defineComponent({
   .post-create {
     font-style: italic;
   }
-  .post-contant {
+  .post-content {
     padding-bottom: 80px;
+    word-break: break-word;
   }
 }
 </style>

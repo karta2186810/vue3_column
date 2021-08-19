@@ -76,9 +76,10 @@ export default defineComponent({
 
     const fetchCurrentColumn = (cid: string) => {
       store.dispatch('fetchColumn', cid).then(res => {
-        const { data: { title, description } } = res
-        columnDesc.value = description
-        columnName.value = title
+        if (res) {
+          columnDesc.value = res.data.description
+          columnName.value = res.data.title
+        }
       })
     }
     watch(storeUser, async () => {
