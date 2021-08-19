@@ -1,43 +1,45 @@
 <template>
   <div class="edit-profile">
-    <h3 class="my-5">編輯資料</h3>
-    <uploader
-      action="/upload"
-      class="w-50 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5"
-      @file-uploaded="onFileUploaded"
+    <div class="row">
+      <h3 class="my-3 fw-bold col-lg-6 col-sm-12 mx-auto">編輯資料</h3>
+      <uploader
+        action="/upload"
+        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5"
+        @file-uploaded="onFileUploaded"
       >
-      <div v-if="storeUser.avatar" class="circle">
-        <img :src="storeUser.avatar.url" alt="用戶頭像">
-      </div>
-      <h3 v-else>點擊上傳頭像</h3>
-      <template #uploaded="dataProps">
-        <div class="circle">
-          <img :src="dataProps.uploadedData.data.url" alt="用戶頭像">
+        <div v-if="storeUser.avatar" class="circle">
+          <img :src="storeUser.avatar.url" alt="用戶頭像">
         </div>
-      </template>
-    </uploader>
-    <validate-form
-      @form-submit="onFormSubmit"
+        <h3 v-else>點擊上傳頭像</h3>
+        <template #uploaded="dataProps">
+          <div class="circle">
+            <img :src="dataProps.uploadedData.data.url" alt="用戶頭像">
+          </div>
+        </template>
+      </uploader>
+      <validate-form
+        @form-submit="onFormSubmit"
       >
-      <label class="mb-1">用戶暱稱:</label>
-      <validate-input
-        placeholder="請輸入暱稱"
-        v-model="nameVal"
-        type="text"
-        :rules="nameRule"
-      ></validate-input>
-      <label class="mb-1">用戶介紹:</label>
-      <validate-input
-        placeholder="請輸入介紹"
-        v-model="descVal"
-        tag="textarea"
-        rows="5"
-        :rules="descRule"
-      ></validate-input>
-      <template #submit>
-        <button class="btn btn-primary w-100">確認更改</button>
-      </template>
-    </validate-form>
+        <label class="mb-1 fw-bold">用戶暱稱</label>
+        <validate-input
+          placeholder="請輸入暱稱"
+          v-model="nameVal"
+          type="text"
+          :rules="nameRule"
+        ></validate-input>
+        <label class="mb-1 fw-bold">用戶介紹</label>
+        <validate-input
+          placeholder="請輸入介紹"
+          v-model="descVal"
+          tag="textarea"
+          rows="5"
+          :rules="descRule"
+        ></validate-input>
+        <template #submit>
+          <button class="btn btn-primary w-100">確認更改</button>
+        </template>
+      </validate-form>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -120,9 +122,8 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .edit-profile {
-  h3 {
-    text-align: center;
-  }
+  width: 100%;
+  height: 100%;
   .circle {
     width: 200px;
     height: 200px;
@@ -157,5 +158,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>

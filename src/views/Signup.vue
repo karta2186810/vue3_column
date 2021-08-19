@@ -1,5 +1,6 @@
 <template>
   <div class="signup-page mx-auto p-3 w-330">
+    <h2 class="text-center py-3 fw-bold">註冊</h2>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label fw-bolder">電子郵件</label>
@@ -93,7 +94,7 @@ export default defineComponent({
         }
         try {
           await axios.post('/users/', payload)
-          createMessage('註冊成功，即將跳轉頁面', 'success')
+          createMessage('註冊成功，跳轉至登入頁面', 'success')
           setTimeout(() => {
             router.push('/login')
           }, 2000)
@@ -114,4 +115,9 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style lang="scss">
+.signup-page {
+  width: 100%;
+  height: 100%;
+}
+</style>

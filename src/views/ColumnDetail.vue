@@ -1,19 +1,21 @@
 <template>
-  <div class="column-detail-page w-75 mx-auto">
-    <div class="column-info row mb-4 border-bottom pb-4" v-if="column">
-      <div class="col-3 text-center">
+  <div class="column-detail-page mx-auto">
+    <div class="align-items-center row mb-4 border-bottom pb-4" v-if="column">
+      <div class="avatar-container text-center col-3">
         <img :src="column.avatar && column.avatar.url" :alt="column.title" class="column-avatar rounded-circle">
       </div>
-      <div class="d-flex flex-column col-9">
+      <div class="column-info d-flex flex-column col-9">
         <h4 class="column-title my-0">{{column.title}}</h4>
-        <p class="text-muted my-0 mt-1">{{column.description}}</p>
+        <p class="text-muted my-0 mt-1 column-desc">{{column.description}}</p>
       </div>
     </div>
     <post-list v-if="posts.length" :posts="posts"></post-list>
-    <div v-else class="post-list-fallback my-3 col-6 mx-auto">
-      <img src="../assets/callout.svg" alt="callout" class="w-50"/>
-      <h4 class="mt-5">你還沒有文章哦</h4>
-      <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
+    <div v-else class="col-lg-8 col-md-8 mx-auto post-list-fallback">
+      <img src="../assets/callout.svg" alt="callout" class="col-lg-3 col-md-3 col-sm-8 mx-auto"/>
+      <h2 class="font-weight-light mt-5 text-center">您還沒有文章哦!</h2>
+      <p class="mx-auto text-center">
+        <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
+      </p>
     </div>
     <button
       class="btn btn-outline-primary w-25 mx-auto d-block mb-3"
@@ -68,11 +70,8 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .column-detail-page {
-   .column-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  width: 100%;
+  align-self: start;
   .column-avatar {
     width: 80px;
     height: 80px;
@@ -86,6 +85,22 @@ export default defineComponent({
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+  }
+  @media (max-width: 576px) {
+    .avatar-container {
+      width: 100%;
+    }
+    .column-info {
+      text-align: center;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .post-list-fallback {
+      img {
+        width: 50%;
+      }
+    }
   }
 }
 </style>

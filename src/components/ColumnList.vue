@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-      <div v-for="column in columnList" :key="column._id" class="col-4 mb-2 mt-3">
+      <div v-for="column in columnList" :key="column._id" class="col-lg-4 col-md-4 col-sm-12 mb-2 mt-3">
         <div class="card h-100 shadow-sm">
           <div class="card-body text-center d-flex flex-column justify-content-between align-items-center h-100">
             <div class="w-100">

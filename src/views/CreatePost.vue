@@ -3,7 +3,7 @@
     <h4 class="text-center fw-bolder">{{ isEditMode? '編輯文章': '新建文章' }}</h4>
     <uploader
       action="/upload"
-      class="d-flex align-items-center justify-content-center bg-light text-secondary w-50 mx-auto my-4"
+      class="d-flex align-items-center justify-content-center bg-light text-secondary col-lg-6 col-sm-12 mx-auto my-4"
       :uploaded="uploadedData"
       :beforeUpload="uploadCheck"
       @file-uploaded="handleFileUploaded"
@@ -21,7 +21,7 @@
     </uploader>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
-        <label class="form-label fw-bolder">文章標題:</label>
+        <label class="form-label fw-bolder">文章標題</label>
         <validate-input
           :rules="titleRules"
           v-model="titleVal"
@@ -30,7 +30,7 @@
         ></validate-input>
       </div>
       <div class="mb-3">
-        <label class="form-label fw-bolder">文章詳情:</label>
+        <label class="form-label fw-bolder">文章詳情</label>
         <validate-input
           type="text"
           tag="textarea"
@@ -159,6 +159,8 @@ export default defineComponent({
   text-align: center;
 }
 .create-post-page {
+  width: 100%;
+  height: 100%;
   .file-upload-container {
     height: 200px;
     cursor: pointer;

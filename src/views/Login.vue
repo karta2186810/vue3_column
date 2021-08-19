@@ -1,5 +1,6 @@
 <template>
   <div class="login-page">
+    <h2 class="text-center py-3 fw-bold">登入</h2>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-2">
         <label class="form-label fw-bolder">電子郵件</label>
@@ -83,4 +84,9 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style lang="scss">
+.login-page {
+  width: 100%;
+  height: 100%;
+}
+</style>

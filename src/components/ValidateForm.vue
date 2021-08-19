@@ -1,12 +1,14 @@
 <template>
-  <form class="validate-form-container w-50 mx-auto my-3" @submit.prevent="submitForm">
-    <slot name="default"></slot>
-    <div class="submit-area">
-      <slot name="submit">
-        <button type="submit" class="btn btn-primary w-100">確認</button>
-      </slot>
-    </div>
-  </form>
+  <div class="row">
+    <form class="validate-form-container col-lg-6 col-sm-12 mx-auto my-3" @submit.prevent="submitForm">
+      <slot name="default"></slot>
+      <div class="submit-area">
+        <slot name="submit">
+          <button type="submit" class="btn btn-primary w-100">確認</button>
+        </slot>
+      </div>
+    </form>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, onUnmounted } from 'vue'

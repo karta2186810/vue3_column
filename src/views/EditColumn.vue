@@ -1,47 +1,49 @@
 <template>
   <div class="edit-column">
-    <h3 class="my-5">編輯專欄</h3>
-    <uploader
-      action="/upload"
-      class="d-flex align-items-center justify-content-center bg-light text-secondary w-50 mx-auto my-4"
-      @file-uploaded="onFileUploaded"
-    >
-      <div v-if="currentColumn && currentColumn.avatar" class="circle">
-        <img :src="currentColumn.avatar.url" :alt="currentColumn.title">
-      </div>
-      <h2 v-else>點擊上傳封面圖片</h2>
-      <template #loading>
-        <div class="d-flex">
-          <div class="spinner-border text-secondary mx-3"></div>
-          <h2>正在上傳...</h2>
+    <div class="row flex-column align-items-center">
+      <h3 class="my-3 fw-bold col-lg-6 col-sm-12 mx-auto">編輯專欄</h3>
+      <uploader
+        action="/upload"
+        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light text-secondary mx-auto my-4"
+        @file-uploaded="onFileUploaded"
+      >
+        <div v-if="currentColumn && currentColumn.avatar" class="circle">
+          <img :src="currentColumn.avatar.url" :alt="currentColumn.title">
         </div>
-      </template>
-      <template #uploaded="dataProps">
-        <img :src="dataProps.uploadedData.data.url" alt="文章封面">
-      </template>
-    </uploader>
-    <validate-form
-      @form-submit="onFormSubmit"
-    >
-      <label class="fw-bolder mb-1">專欄名稱:</label>
-      <validate-input
-        placeholder="請輸入名稱"
-        v-model="columnName"
-        type="text"
-        :rules="nameRule"
-      ></validate-input>
-      <label class="fw-bolder mb-1">專欄介紹:</label>
-      <validate-input
-        placeholder="請輸入介紹"
-        v-model="columnDesc"
-        tag="textarea"
-        rows="5"
-        :rules="descRule"
-      ></validate-input>
-      <template #submit>
-        <button class="btn btn-primary w-100">確認更改</button>
-      </template>
-    </validate-form>
+        <h2 v-else>點擊上傳封面圖片</h2>
+        <template #loading>
+          <div class="d-flex">
+            <div class="spinner-border text-secondary mx-3"></div>
+            <h2>正在上傳...</h2>
+          </div>
+        </template>
+        <template #uploaded="dataProps">
+          <img :src="dataProps.uploadedData.data.url" alt="文章封面">
+        </template>
+      </uploader>
+      <validate-form
+        @form-submit="onFormSubmit"
+      >
+        <label class="fw-bolder mb-1">專欄名稱</label>
+        <validate-input
+          placeholder="請輸入名稱"
+          v-model="columnName"
+          type="text"
+          :rules="nameRule"
+        ></validate-input>
+        <label class="fw-bolder mb-1">專欄介紹</label>
+        <validate-input
+          placeholder="請輸入介紹"
+          v-model="columnDesc"
+          tag="textarea"
+          rows="5"
+          :rules="descRule"
+        ></validate-input>
+        <template #submit>
+          <button class="btn btn-primary w-100">確認更改</button>
+        </template>
+      </validate-form>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -80,15 +82,15 @@ export default defineComponent({
       })
     }
     watch(storeUser, async () => {
-      if (storeUser.value && !currentColumn.value) {
-        if (storeUser.value.column) {
+      if (storeUser.value && storeUser.value.column) {
+        if (!currentColumn.value) {
           fetchCurrentColumn(storeUser.value.column)
         }
       }
     })
     onMounted(() => {
       const cid = storeUser.value.column
-      if (cid && !currentColumn.value) {
+      if (cid) {
         fetchCurrentColumn(cid)
       }
     })
@@ -104,8 +106,8 @@ export default defineComponent({
             description: columnDesc.value,
             title: columnName.value,
             avatar: {
-              _id: uploadedData.value.data._id,
-              url: uploadedData.value.data.url
+              _id: uploadedData.value.data && uploadedData.value.data._id,
+              url: uploadedData.value.data && uploadedData.value.data.url
             }
           }
         } else {
@@ -137,11 +139,9 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .edit-column {
-  h3 {
-    text-align: center;
-  }
+  width: 100%;
+  height: 100%;
   .file-upload-container {
-    width: 200px;
     height: 200px;
     overflow: hidden;
     cursor: pointer;
@@ -151,6 +151,25 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+    &:hover {
+      img {
+        transform: scale(1.1);
+        transition: all 0.3s;
+      }
+      &::after {
+        content: '點擊上傳圖片';
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0,0,0,0.2);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }

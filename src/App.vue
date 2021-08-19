@@ -4,11 +4,6 @@
     <div class="container">
       <loader v-if="isLoading" text="加載中" background="rgba(0,0,0,.8)"></loader>
       <router-view :key="$route.fullPath"></router-view>
-<!--      <router-view v-slot="{ Component }" :key="$route.fullPath">-->
-<!--        <transition name="slide" appear>-->
-<!--            <component :is="Component"/>-->
-<!--        </transition>-->
-<!--      </router-view>-->
     </div>
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -79,6 +74,9 @@ export default defineComponent({
   flex-direction: column;
   .container {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

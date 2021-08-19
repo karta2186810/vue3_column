@@ -1,8 +1,8 @@
 <template>
   <div class="home-page">
     <section class="py-5 text-center container">
-      <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto">
+      <div class="row">
+        <div class="col-lg-8 col-md-8 mx-auto">
           <img src="../assets/callout.svg" alt="callout" class="w-50"/>
           <h2 class="font-weight-light mt-5">隨心寫作，自由表達</h2>
           <p>
@@ -14,7 +14,7 @@
     <h4 class="font-weight-bold text-center fw-bolder">發現精彩</h4>
     <column-list :list="list"></column-list>
     <button
-      class="btn btn-outline-primary d-block mt-2 mb-5 mx-auto w-25"
+      class="btn btn-outline-primary d-block mt-2 mb-5 mx-auto col-lg-3"
       @click="loadMorePage"
       v-if="!isLastPage"
       >加載更多</button>
