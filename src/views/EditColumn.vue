@@ -7,7 +7,7 @@
       @file-uploaded="onFileUploaded"
     >
       <div v-if="currentColumn && currentColumn.avatar" class="circle">
-        <img :src="currentColumn.avatar.url" alt="用戶頭像">
+        <img :src="currentColumn.avatar.url" :alt="currentColumn.title">
       </div>
       <h2 v-else>點擊上傳封面圖片</h2>
       <template #loading>
@@ -45,7 +45,7 @@
   </div>
 </template>
 <script lang="ts">
-import { ref, computed, defineComponent, watch } from 'vue'
+import { ref, computed, defineComponent, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { AvatarProps, ColumnProps, UserProps } from '@/store'
@@ -64,34 +64,35 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const storeUser = computed<UserProps>(() => store.state.user)
-    const currentColumn = computed<ColumnProps>(() => store.getters.getColumnById(storeUser.value.column))
-    const columnName = computed({
-      get () {
-        return currentColumn.value && currentColumn.value.title
-      },
-      set (newValue) {
-        currentColumn.value.title = newValue
-      }
-    })
-    const columnDesc = computed({
-      get () {
-        return currentColumn.value && currentColumn.value.description
-      },
-      set (newValue) {
-        currentColumn.value.description = newValue
-      }
-    })
-    const uploadedData = ref<AvatarProps>()
+    const currentColumn = computed(() => store.getters.getColumnById(storeUser.value.column))
+    const columnName = ref(currentColumn.value && currentColumn.value.title)
+    const columnDesc = ref(currentColumn.value && currentColumn.value.description)
+    const uploadedData = ref()
     // 輸入框規則
     const nameRule: RulesProp = [{ type: 'required', message: '名稱不能為空' }]
     const descRule: RulesProp = [{ type: 'required', message: '介紹不能為空' }]
 
-    watch(storeUser, () => {
+    const fetchCurrentColumn = (cid: string) => {
+      store.dispatch('fetchColumn', cid).then(res => {
+        const { data: { title, description } } = res
+        columnDesc.value = description
+        columnName.value = title
+      })
+    }
+    watch(storeUser, async () => {
       if (storeUser.value && !currentColumn.value) {
-        store.dispatch('fetchColumn', storeUser.value.column)
+        if (storeUser.value.column) {
+          fetchCurrentColumn(storeUser.value.column)
+        }
       }
     })
-    const onFileUploaded = (newAvatar) => {
+    onMounted(() => {
+      const cid = storeUser.value.column
+      if (cid && !currentColumn.value) {
+        fetchCurrentColumn(cid)
+      }
+    })
+    const onFileUploaded = (newAvatar: any) => {
       uploadedData.value = newAvatar
       console.log(newAvatar)
     }

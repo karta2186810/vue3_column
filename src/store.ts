@@ -136,11 +136,8 @@ const store = createStore<GlobalDataProps>({
     editUserProfile (state, rawData) {
       state.user = { ...state.user, ...rawData.data }
     },
-    editUserColumn (state, rawData) {
-      const { _id } = rawData
-      let currentColumn = state.columns.data[_id]
-      currentColumn = rawData
-      console.log(rawData)
+    editUserColumn (state, { data }) {
+      state.columns.data[data._id] = data
     },
     logout (state) {
       state.user = { isLogin: false }

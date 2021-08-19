@@ -35,10 +35,8 @@ export default defineComponent({
     PostList
   },
   setup () {
-    // useRoute會創建一個物件包含路由的所有訊息
     const route = useRoute()
     const store = useStore<GlobalDataProps>()
-    // 取得當前路由上的id params
     const columnId = ref(route.params.id)
     const posts = computed(() => store.getters.getPostsByCid(columnId.value))
     const total = computed(() => store.getters.getTotalByCid(columnId.value))
