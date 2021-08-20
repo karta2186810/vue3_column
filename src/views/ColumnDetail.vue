@@ -25,12 +25,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, onMounted, ref } from 'vue'
+import { defineComponent, computed, onMounted, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { GlobalDataProps, ColumnProps } from '@/store'
 import PostList from '../components/PostList.vue'
 import useLoadMore from '../hooks/useLoadMore'
+
 export default defineComponent({
   name: 'ColumnDetail',
   components: {
@@ -52,6 +53,10 @@ export default defineComponent({
         selectColumn.avatar = { url: require('@/assets/column.jpg') }
       }
       return selectColumn
+    })
+
+    watchEffect(() => {
+      document.title = (column.value && column.value.title) || document.title
     })
 
     onMounted(() => {

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-      <div v-for="column in columnList" :key="column._id" class="col-lg-4 col-md-4 col-sm-12 mb-2 mt-3">
+      <div v-for="column in columnList" :key="column._id" class="column-list col-lg-4 col-md-4 col-sm-12 mb-2 mt-3">
         <div class="card h-100 shadow-sm">
           <div class="card-body text-center d-flex flex-column justify-content-between align-items-center h-100">
             <div class="w-100">
@@ -27,7 +27,6 @@ export default defineComponent({
     }
   },
   setup (props) {
-    // 這裡必須使用computed，因為即使父組件props驅動了子組件的更新，但是setup只會執行一次，無法對數據的更新進行處理
     const columnList = computed(() => {
       /* 判斷是否存在頭圖，沒有的話使用預設頭圖 */
       return props.list.map(column => {
@@ -49,4 +48,10 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style lang="scss">
+.column-list {
+  img {
+    object-fit: cover;
+  }
+}
+</style>

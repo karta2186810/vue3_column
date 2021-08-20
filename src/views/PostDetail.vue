@@ -34,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import MarkdownIt from 'markdown-it'
@@ -85,9 +85,13 @@ export default defineComponent({
         }, 2000)
       })
     }
+
+    watchEffect(() => {
+      document.title = (currentPost.value && currentPost.value.title) || document.title
+    })
+
     onMounted(() => {
-      store.dispatch('fetchPost', currentId).then(res => console.log(res)
-      )
+      store.dispatch('fetchPost', currentId)
     })
     return {
       currentId,
