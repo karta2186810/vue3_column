@@ -1,10 +1,10 @@
 <template>
   <div class="column-detail-page mx-auto">
     <div class="align-items-center row mb-4 border-bottom pb-4" v-if="column">
-      <div class="avatar-container text-center col-3">
+      <div class="avatar-container text-center col-2">
         <img :src="column.avatar && column.avatar.url" :alt="column.title" class="column-avatar rounded-circle">
       </div>
-      <div class="column-info d-flex flex-column col-9">
+      <div class="column-info d-flex flex-column col-10">
         <h4 class="column-title my-0">{{column.title}}</h4>
         <p class="text-muted my-0 mt-1 column-desc">{{column.description}}</p>
       </div>
@@ -82,7 +82,7 @@ export default defineComponent({
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #999;
+    border: 2px solid #efefef;
   }
   .post-list-fallback {
     color: #555;

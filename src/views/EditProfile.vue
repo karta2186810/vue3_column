@@ -1,7 +1,7 @@
 <template>
   <div class="edit-profile">
     <div class="row">
-      <h3 class="my-3 fw-bold col-lg-6 col-sm-12 mx-auto">編輯資料</h3>
+      <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯資料</h3>
       <uploader
         action="/upload"
         class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5"
@@ -19,6 +19,7 @@
       </uploader>
       <validate-form
         @form-submit="onFormSubmit"
+        class="mx-auto"
       >
         <label class="mb-1 fw-bold">用戶暱稱</label>
         <validate-input

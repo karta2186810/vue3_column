@@ -38,5 +38,11 @@ export default defineComponent({
     color: inherit;
     font-size: 24px;
   }
+  article{
+    trasition: 0.3s;
+    &:hover {
+      background-color: #efefef;
+    }
+  }
 }
 </style>

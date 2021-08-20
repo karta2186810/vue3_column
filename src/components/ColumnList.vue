@@ -1,7 +1,7 @@
 <template>
     <div class="row">
       <div v-for="column in columnList" :key="column._id" class="column-list col-lg-4 col-md-4 col-sm-12 mb-2 mt-3">
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm column-card">
           <div class="card-body text-center d-flex flex-column justify-content-between align-items-center h-100">
             <div class="w-100">
               <img :src="column.avatar && column.avatar.url" :alt="column.title" class="rounded-circle border border-light w-25 my-3">
@@ -50,6 +50,12 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .column-list {
+  .column-card {
+    transition: 0.3s;
+    &:hover {
+      background-color: #efefef;
+    }
+  }
   img {
     object-fit: cover;
   }

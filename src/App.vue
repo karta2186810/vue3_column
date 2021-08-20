@@ -8,11 +8,7 @@
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
         <ul class="list-inline mb-0">
-          <li class="list-inline-item">2021 者也專欄</li>
-          <li class="list-inline-item">課程</li>
-          <li class="list-inline-item">文檔</li>
-          <li class="list-inline-item">聯繫</li>
-          <li class="list-inline-item">更多</li>
+          <li class="list-inline-item">2021 Vue3 專欄</li>
         </ul>
       </small>
     </footer>

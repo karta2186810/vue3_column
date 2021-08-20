@@ -1,37 +1,40 @@
 <template>
-  <div v-if="currentPost" class="detail-page col-lg-8 mx-auto">
-    <modal
-      title="刪除文章"
-      :visible="isModalVisible"
-      @modal-on-close="closeModal"
-      @modal-on-confirm="hideAndDelete"
+    <div v-if="currentPost" class="detail-page col-lg-8 mx-auto">
+      <modal
+        title="刪除文章"
+        :visible="isModalVisible"
+        @modal-on-close="closeModal"
+        @modal-on-confirm="hideAndDelete"
       >
-      <p>確定刪除文章?</p>
-    </modal>
-    <div class="post-image-container" v-if="currentPost.image && typeof currentPost.image === 'object'">
-      <img :src="currentPost.image.url" alt="">
-    </div>
-    <h2>{{ currentPost.title }}</h2>
-    <div class="border-top border-bottom py-3 mb-5 d-flex align-items-center justify-content-between">
-      <div>
-        <user-profile :user="currentPost.author" v-if="typeof currentPost.author === 'object'"></user-profile>
+        <p>確定刪除文章?</p>
+      </modal>
+      <div class="post-image-container" v-if="currentPost.image && typeof currentPost.image === 'object'">
+        <img :src="currentPost.image.url" alt="">
       </div>
-      <span class="text-muted post-create">發表於: {{ currentPost.createdAt }}</span>
-    </div>
-    <div v-html="currentHTML" class="post-content"></div>
-    <div v-if="showEditArea()" class="bnt-group my-5">
-      <router-link
-        type="button"
-        class="btn btn-primary me-1"
-        :to="{ name: 'create', query: { id: currentPost._id }}"
+      <h2 class="fw-bolder">{{ currentPost.title }}</h2>
+      <div class="border-top border-bottom py-3 mb-5 d-flex align-items-center justify-content-between">
+        <div class="user-profile">
+          <user-profile
+            @click="toColumn"
+            :user="currentPost.author"
+            v-if="typeof currentPost.author === 'object'"></user-profile>
+        </div>
+        <span class="text-muted post-create">發表於: {{ currentPost.createdAt }}</span>
+      </div>
+      <div v-html="currentHTML" class="post-content"></div>
+      <div v-if="showEditArea()" class="bnt-group my-5">
+        <router-link
+          type="button"
+          class="btn btn-primary me-1"
+          :to="{ name: 'create', query: { id: currentPost._id }}"
         >編輯</router-link>
-      <button
-        type="button"
-        class="btn btn-danger"
-        @click="isModalVisible = true"
+        <button
+          type="button"
+          class="btn btn-danger"
+          @click="isModalVisible = true"
         >刪除</button>
+      </div>
     </div>
-  </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
@@ -85,7 +88,9 @@ export default defineComponent({
         }, 2000)
       })
     }
-
+    const toColumn = () => {
+      router.push(`/column/${currentPost.value.column}`)
+    }
     watchEffect(() => {
       document.title = (currentPost.value && currentPost.value.title) || document.title
     })
@@ -100,13 +105,16 @@ export default defineComponent({
       showEditArea,
       isModalVisible,
       closeModal,
-      hideAndDelete
+      hideAndDelete,
+      toColumn
     }
   }
 })
 </script>
 <style lang="scss">
 .detail-page {
+  width: 100%;
+  height: 100%;
   h2 {
     margin-top: 48px;
     margin-bottom: 24px;
@@ -120,6 +128,14 @@ export default defineComponent({
   }
   .post-create {
     font-style: italic;
+  }
+  .user-profile {
+    cursor: pointer;
+  }
+  @media (max-width: 576px) {
+    .post-create {
+      display: none;
+    }
   }
   .post-content {
     padding-bottom: 80px;

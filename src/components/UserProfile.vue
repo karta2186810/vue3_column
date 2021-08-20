@@ -3,7 +3,7 @@
     <img :src="fitUrl" :alt="user.nickName">
     <div>
       <h5 class="mb-0">{{ user.nickName }}</h5>
-      <p v-if="user.description" class="text-secondary text-secondary mb-0">{{ user.description }}</p>
+      <p v-if="user.description" class="text-secondary mb-0">{{ user.description }}</p>
       <p v-else class="text-secondary mt-1 mb-0">還沒有任何介紹哦!</p>
     </div>
   </div>

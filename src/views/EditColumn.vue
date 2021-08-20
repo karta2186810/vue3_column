@@ -1,7 +1,7 @@
 <template>
   <div class="edit-column">
     <div class="row flex-column align-items-center">
-      <h3 class="my-3 fw-bold col-lg-6 col-sm-12 mx-auto">編輯專欄</h3>
+      <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯專欄</h3>
       <uploader
         action="/upload"
         class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light text-secondary mx-auto my-4"
@@ -142,6 +142,7 @@ export default defineComponent({
 .edit-column {
   width: 100%;
   height: 100%;
+  align-self: start;
   .file-upload-container {
     height: 200px;
     overflow: hidden;
