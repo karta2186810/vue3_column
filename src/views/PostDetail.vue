@@ -27,12 +27,12 @@
           type="button"
           class="btn btn-primary me-1"
           :to="{ name: 'create', query: { id: currentPost._id }}"
-        >編輯</router-link>
+        ><i class="far fa-edit me-2"></i>編輯</router-link>
         <button
           type="button"
           class="btn btn-danger"
           @click="isModalVisible = true"
-        >刪除</button>
+        ><i class="far fa-trash-alt me-2"></i>刪除</button>
       </div>
     </div>
 </template>

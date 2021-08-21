@@ -3,6 +3,8 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import App from './App.vue'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 // 進行axios基本路徑的設定
 axios.defaults.baseURL = 'https://apis.imooc.com/api/'

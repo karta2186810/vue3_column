@@ -6,7 +6,7 @@
           <img src="../assets/callout.svg" alt="callout" class="w-50"/>
           <h2 class="font-weight-light mt-5">隨心寫作，自由表達</h2>
           <p>
-            <router-link to="/create" class="btn btn-primary my-3 fw-bolder">開始寫作</router-link>
+            <router-link to="/create" class="btn btn-primary my-3 fw-bolder"><i class="fas fa-pen me-2"></i>開始寫作</router-link>
           </p>
         </div>
       </div>

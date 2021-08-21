@@ -8,7 +8,7 @@
     <footer class="footer text-center py-4 text-secondary bg-light mt-6">
       <small>
         <ul class="list-inline mb-0">
-          <li class="list-inline-item">2021 Vue3 專欄</li>
+          <li class="list-inline-item">2021 隨心專欄</li>
         </ul>
       </small>
     </footer>

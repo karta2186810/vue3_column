@@ -19,7 +19,7 @@ const router = createRouter({
       name: 'home',
       component: Home,
       meta: {
-        title: 'Vue3專欄'
+        title: '隨心專欄'
       }
     },
     {
@@ -43,7 +43,7 @@ const router = createRouter({
       component: CreatePost,
       meta: {
         requiredLogin: true,
-        title: '創建文章'
+        title: '新建文章'
       }
     },
     {
@@ -91,7 +91,7 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch('fetchCurrentUser')
         if (redirectAlreadyLogin) {
           // 如果目標路由存在redirectAlreadyLogin的meta的話(這裡只有訪問/login有這個標籤)，跳轉到主頁面
-          document.title = 'Vue3專欄'
+          document.title = '隨心專欄'
           next('/')
         } else {
           if (title) document.title = title as string
@@ -119,7 +119,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (redirectAlreadyLogin) {
-      document.title = 'Vue3專欄'
+      document.title = '隨心專欄'
       next('/')
     } else {
       if (title) document.title = title as string
