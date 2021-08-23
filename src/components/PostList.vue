@@ -4,11 +4,15 @@
       <router-link :to="`/posts/${post._id}`">
         <div class="card-body px-5 py-4">
           <h3  class="fw-bolder post-title text-dark">{{ post.title }}</h3>
-          <div class="row my-3 align-items-center">
-            <div v-if="post.image && typeof post.image ==='object'" class="col-3">
-              <img :src="post.image.url" :alt="post.title" class="rounded-lg w-75">
+          <div class="d-flex my-3 align-items-center">
+            <div
+              v-if="post.image && typeof post.image ==='object'"
+              class="col-3 post-image overflow-hidden"
+              :style="{ backgroundImage: `url(${post.image.url})` }"
+            >
+<!--              <img :src="post.image.url" :alt="post.title">-->
             </div>
-            <p :class="{ 'col-9': post.image }" class="text-muted">{{ post.excerpt }}</p>
+            <p :class="{ 'col-9': post.image }" class="text-muted post-excerpt ps-5">{{ post.excerpt }}</p>
           </div>
           <span class="text-muted">{{ post.createdAt }}</span>
         </div>
@@ -42,6 +46,21 @@ export default defineComponent({
     trasition: 0.3s;
     &:hover {
       background-color: #efefef;
+    }
+  }
+  .post-image {
+    padding-top: 20%;
+    background-position: center center;
+    background-size: cover;
+    height: 0;
+  }
+  @media (max-width: 576px) {
+    .post-excerpt {
+      display: none;
+    }
+    .post-image {
+      width: 100%;
+      padding-top: 70%;
     }
   }
 }
