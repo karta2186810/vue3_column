@@ -15,3 +15,6 @@
 - 狀態管理: Vuex
 - 使用語言: TypeScript
 - UI框架: Bootstrap 5
+
+### 展示網址
+https://karta2186810.github.io/vue3_column/
