@@ -4,13 +4,15 @@
       <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯專欄</h3>
       <uploader
         action="/upload"
-        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light text-secondary mx-auto my-4"
+        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5 circle"
         @file-uploaded="onFileUploaded"
       >
         <div v-if="currentColumn && currentColumn.avatar" class="circle">
           <img :src="currentColumn.avatar.url" :alt="currentColumn.title">
         </div>
-        <h2 v-else>點擊上傳封面圖片</h2>
+        <div v-else class="circle">
+          <img src="../assets/column.jpg" alt="專欄頭像">
+        </div>
         <template #loading>
           <div class="d-flex">
             <div class="spinner-border text-secondary mx-3"></div>
@@ -18,7 +20,7 @@
           </div>
         </template>
         <template #uploaded="dataProps">
-          <img :src="dataProps.uploadedData.data.url" alt="文章封面">
+          <img :src="dataProps.uploadedData.data.url" alt="專欄頭像">
         </template>
       </uploader>
       <validate-form
@@ -143,8 +145,10 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   align-self: start;
-  .file-upload-container {
+  .circle {
+    width: 200px;
     height: 200px;
+    border-radius: 200px;
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -153,11 +157,11 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: 0.2s;
     }
     &:hover {
       img {
         transform: scale(1.1);
-        transition: all 0.3s;
       }
       &::after {
         content: '點擊上傳圖片';

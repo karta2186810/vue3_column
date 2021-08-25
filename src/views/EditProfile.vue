@@ -4,13 +4,15 @@
       <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯資料</h3>
       <uploader
         action="/upload"
-        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5"
+        class="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center  text-secondary mx-auto my-5 circle"
         @file-uploaded="onFileUploaded"
       >
         <div v-if="storeUser.avatar" class="circle">
           <img :src="storeUser.avatar.url" alt="用戶頭像">
         </div>
-        <h3 v-else>點擊上傳頭像</h3>
+        <div v-else class="circle">
+          <img src="../assets/avatar.jpg" alt="用戶頭像">
+        </div>
         <template #uploaded="dataProps">
           <div class="circle">
             <img :src="dataProps.uploadedData.data.url" alt="用戶頭像">
