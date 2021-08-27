@@ -1,5 +1,8 @@
 <template>
-  <nav class="navbar navbar-dark bg-primary justifiy-content-between mb-4 px-4">
+  <nav
+    class="navbar navbar-dark bg-primary justifiy-content-between mb-4 px-4"
+    :class="{ fixed: isTop, 'scroll-down': isScrollDown }"
+  >
     <router-link to="/" class="navbar-brand">隨心專欄</router-link>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
       <li class="list-inline-item">
@@ -35,7 +38,7 @@
   </nav>
 </template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { UserProps, GlobalDataProps } from '../store'
 import DropDown from './DropDown.vue'
@@ -55,16 +58,53 @@ export default defineComponent({
   },
   setup () {
     const store = useStore<GlobalDataProps>()
+    const isTop = ref(false)
+    const isScrollDown = ref(false)
+    let oldScrollTop = 0
     const logout = () => {
       if (store.state.user.isLogin) {
         store.commit('logout')
       }
     }
+    const setToFixed = () => {
+      const scrollTop = document.documentElement.scrollTop
+      if (Math.floor(scrollTop) > 0) {
+        isTop.value = true
+      } else {
+        isTop.value = false
+      }
+      if (scrollTop > oldScrollTop) {
+        isScrollDown.value = true
+        oldScrollTop = scrollTop
+      } else {
+        isScrollDown.value = false
+        oldScrollTop = scrollTop
+      }
+    }
+    onMounted(() => {
+      document.addEventListener('scroll', setToFixed)
+    })
+    onUnmounted(() => {
+      document.removeEventListener('scroll', setToFixed)
+    })
     return {
-      logout
+      logout,
+      isTop,
+      isScrollDown
     }
   }
 })
 </script>
 <style lang="scss" scoped>
+.fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: 0.3s;
+  &.scroll-down {
+    transform: translateY(-100%);
+  }
+}
 </style>
