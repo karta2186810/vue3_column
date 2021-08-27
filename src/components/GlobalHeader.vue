@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar navbar-dark bg-primary justifiy-content-between mb-4 px-4"
+    class="navbar navbar-dark bg-primary justify-content-between mb-4 px-4"
     :class="{ fixed: isTop, 'scroll-down': isScrollDown }"
   >
     <router-link to="/" class="navbar-brand">隨心專欄</router-link>
