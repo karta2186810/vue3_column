@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-profile">
+  <div class="edit-profile py-5 w-100">
     <div class="row">
       <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯資料</h3>
       <uploader
@@ -10,8 +10,8 @@
         <div v-if="storeUser.avatar" class="circle">
           <img :src="storeUser.avatar.url" alt="用戶頭像">
         </div>
-        <div v-else class="circle">
-          <img src="../assets/avatar.jpg" alt="用戶頭像">
+        <div v-else class="circle avatar-fallback">
+          <i class="fas fa-user-circle b-block w-100 h-100"></i>
         </div>
         <template #uploaded="dataProps">
           <div class="circle">
@@ -127,6 +127,9 @@ export default defineComponent({
 .edit-profile {
   width: 100%;
   height: 100%;
+  .avatar-fallback {
+    color: #cfcfcf;
+  }
   .circle {
     width: 200px;
     height: 200px;
@@ -147,6 +150,7 @@ export default defineComponent({
       }
       &::after {
         content: '點擊上傳圖片';
+        font-size: 24px;
         color: white;
         display: flex;
         justify-content: center;

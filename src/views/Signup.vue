@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-page mx-auto p-3 w-330">
+  <div class="signup-page mx-auto w-330">
     <h2 class="text-center py-3 fw-bold">註冊</h2>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">

@@ -115,6 +115,7 @@ export default defineComponent({
 .detail-page {
   width: 100%;
   height: 100%;
+  margin-top: 70px;
   h2 {
     margin-top: 48px;
     margin-bottom: 24px;

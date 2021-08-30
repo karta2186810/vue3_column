@@ -1,7 +1,7 @@
 <template>
   <nav
-    class="navbar navbar-dark bg-primary justify-content-between mb-4 px-4"
-    :class="{ fixed: isTop, 'scroll-down': isScrollDown }"
+    class="navbar navbar-dark bg-primary justify-content-between mb-4 px-4 fixed"
+    :class="{ 'scroll-down': isScrollDown }"
   >
     <router-link to="/" class="navbar-brand">隨心專欄</router-link>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
@@ -68,11 +68,6 @@ export default defineComponent({
     }
     const setToFixed = () => {
       const scrollTop = document.documentElement.scrollTop
-      if (Math.floor(scrollTop) > 0) {
-        isTop.value = true
-      } else {
-        isTop.value = false
-      }
       if (scrollTop > oldScrollTop) {
         isScrollDown.value = true
         oldScrollTop = scrollTop
@@ -89,7 +84,6 @@ export default defineComponent({
     })
     return {
       logout,
-      isTop,
       isScrollDown
     }
   }

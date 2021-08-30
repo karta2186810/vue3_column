@@ -41,6 +41,13 @@ export default defineComponent({
     margin-right: 16px;
     object-fit: cover;
     border-radius: 50%;
+    border: 2px solid transparent;
+    transition: 0.3s;
+  }
+  &:hover {
+    img {
+      border: 2px solid var(--bs-blue);
+    }
   }
 }
 </style>

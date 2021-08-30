@@ -1,5 +1,4 @@
 <template>
-  <div class="row">
     <form class="validate-form-container col-lg-6 col-sm-12 mx-auto my-3" @submit.prevent="submitForm">
       <slot name="default"></slot>
       <div class="submit-area">
@@ -8,7 +7,6 @@
         </slot>
       </div>
     </form>
-  </div>
 </template>
 <script lang="ts">
 import { defineComponent, onUnmounted } from 'vue'

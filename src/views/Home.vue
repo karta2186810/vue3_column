@@ -11,13 +11,13 @@
         </div>
       </div>
     </section>
-    <h4 class="font-weight-bold text-center fw-bolder">發現精彩</h4>
-    <column-list :list="list"></column-list>
+      <column-list :list="list"></column-list>
     <button
       class="btn btn-outline-primary d-block mt-2 mb-5 mx-auto col-lg-3"
       @click="loadMorePage"
       v-if="!isLastPage"
       >加載更多</button>
+    <div v-else class="is-last-page text-center text-secondary py-5 fs-5"><i class="fas fa-exclamation-triangle me-2"></i>沒有更多專欄囉!</div>
   </div>
 </template>
 <script lang="ts">
@@ -53,4 +53,5 @@ export default defineComponent({
   }
 })
 </script>
-<style></style>
+<style lang="scss">
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-column">
+  <div class="edit-column py-5 w-100">
     <div class="row flex-column align-items-center">
       <h3 class="text-center fw-bold col-lg-6 col-sm-12 mx-auto">編輯專欄</h3>
       <uploader
@@ -10,8 +10,8 @@
         <div v-if="currentColumn && currentColumn.avatar" class="circle">
           <img :src="currentColumn.avatar.url" :alt="currentColumn.title">
         </div>
-        <div v-else class="circle">
-          <img src="../assets/column.jpg" alt="專欄頭像">
+        <div v-else class="circle avatar-fallback d-flex justify-content-center align-items-center">
+          <i class="fas fa-book b-block w-50 h-50"></i>
         </div>
         <template #loading>
           <div class="d-flex">
@@ -145,6 +145,10 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   align-self: start;
+  .avatar-fallback {
+    background-color: #cfcfcf;
+    color: #fff;
+  }
   .circle {
     width: 200px;
     height: 200px;
@@ -165,6 +169,7 @@ export default defineComponent({
       }
       &::after {
         content: '點擊上傳圖片';
+        font-size: 24px;
         color: white;
         display: flex;
         justify-content: center;

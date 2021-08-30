@@ -1,11 +1,14 @@
 <template>
-  <div class="column-detail-page mx-auto">
+  <div class="column-detail-page mx-auto py-5">
     <div class="align-items-center row mb-4 border-bottom pb-4" v-if="column">
-      <div class="avatar-container text-center col-2">
-        <img :src="column.avatar && column.avatar.url" :alt="column.title" class="column-avatar rounded-circle">
+      <div v-if="column.avatar" class="avatar-container text-center col-2">
+        <img :src="column.avatar.url" :alt="column.title" class="column-avatar rounded-circle">
+      </div>
+      <div v-else class="avatar-fallback d-flex justify-content-center align-items-center column-avatar col-2 mx-auto">
+        <i class="fas fa-book b-block w-50 h-50"></i>
       </div>
       <div class="column-info d-flex flex-column col-10">
-        <h4 class="column-title my-0">{{column.title}}</h4>
+        <h4 class="column-title my-0 fw-bolder">{{column.title}}</h4>
         <p class="text-muted my-0 mt-1 column-desc">{{column.description}}</p>
       </div>
     </div>
@@ -22,6 +25,7 @@
       v-if="!isLastPage"
       @click="loadMorePage"
       >加載更多</button>
+    <div v-if="isLastPage && posts.length" class="is-last-page text-center text-secondary py-4 fs-5"><i class="fas fa-exclamation-triangle me-2"></i>沒有更多文章囉!</div>
   </div>
 </template>
 <script lang="ts">
@@ -49,9 +53,6 @@ export default defineComponent({
 
     const column = computed(() => {
       const selectColumn = store.getters.getColumnsById(columnId.value) as ColumnProps
-      if (selectColumn && !selectColumn.avatar) {
-        selectColumn.avatar = { url: require('@/assets/column.jpg') }
-      }
       return selectColumn
     })
 
@@ -83,6 +84,10 @@ export default defineComponent({
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #efefef;
+  }
+  .avatar-fallback {
+    background-color: #cfcfcf;
+    color: #fff;
   }
   .post-list-fallback {
     color: #555;
