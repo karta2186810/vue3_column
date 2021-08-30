@@ -1,6 +1,9 @@
 <template>
   <div class="user-profile d-flex justify-content-start align-items-top py-3">
-    <img :src="fitUrl" :alt="user.nickName">
+    <img v-if="user.avatar" :src="user.avatar.url" :alt="user.nickName" class="user-profile-image">
+    <div v-else class="user-profile-image">
+      <i class="fas fa-user-circle b-block w-100 h-100"></i>
+    </div>
     <div>
       <h5 class="mb-0">{{ user.nickName }}</h5>
       <p v-if="user.description" class="text-secondary mb-0">{{ user.description }}</p>
@@ -18,24 +21,12 @@ export default defineComponent({
       type: Object as PropType<UserProps>,
       required: true
     }
-  },
-  setup (props) {
-    const fitUrl = computed(() => {
-      if (props.user.avatar) {
-        return props.user.avatar.url
-      } else {
-        return require('@/assets/column.jpg')
-      }
-    })
-    return {
-      fitUrl
-    }
   }
 })
 </script>
 <style lang="scss">
 .user-profile {
-  img {
+  .user-profile-image {
     width: 50px;
     height: 50px;
     margin-right: 16px;
@@ -43,9 +34,10 @@ export default defineComponent({
     border-radius: 50%;
     border: 2px solid transparent;
     transition: 0.3s;
+    color: #cfcfcf;
   }
   &:hover {
-    img {
+    .user-profile-image {
       border: 2px solid var(--bs-blue);
     }
   }
