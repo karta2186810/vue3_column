@@ -13,6 +13,9 @@ import EditColumn from './views/EditColumn.vue'
 const routerHistory = createWebHashHistory()
 const router = createRouter({
   history: routerHistory,
+  scrollBehavior () {
+    return { left: 0, top: 0 }
+  },
   routes: [
     {
       path: '/',

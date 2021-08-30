@@ -21,7 +21,7 @@
       </p>
     </div>
     <button
-      class="btn btn-outline-primary w-25 mx-auto d-block mb-3"
+      class="btn btn-outline-primary mx-auto d-block mb-3 w-50"
       v-if="!isLastPage"
       @click="loadMorePage"
       >加載更多</button>

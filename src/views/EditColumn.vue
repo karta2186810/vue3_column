@@ -99,7 +99,6 @@ export default defineComponent({
     })
     const onFileUploaded = (newAvatar: any) => {
       uploadedData.value = newAvatar
-      console.log(newAvatar)
     }
     const onFormSubmit = (result: boolean) => {
       if (result) {
