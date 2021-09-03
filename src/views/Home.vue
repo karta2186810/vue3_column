@@ -102,7 +102,7 @@ export default defineComponent({
       position: absolute;
       background-color: var(--bs-blue);
       width: 4px;
-      height: 30px;
+      height: 70%;
       border-radius: 1px;
       right: -10px;
     }
