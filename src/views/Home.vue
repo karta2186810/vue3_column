@@ -107,7 +107,7 @@ export default defineComponent({
       right: -10px;
     }
     &.ended::after {
-      animation: 1s cursor steps(2,jump-none) infinite;
+      animation: 1s cursor steps(2, jump-none) infinite;
     }
   }
 }
