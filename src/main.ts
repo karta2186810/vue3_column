@@ -10,12 +10,12 @@ import '@fortawesome/fontawesome-free/js/all.js'
 axios.defaults.baseURL = 'https://apis.imooc.com/api/'
 // 利用攔截器在每次請求前加上imooc的code
 axios.interceptors.request.use(config => {
-  config.params = { ...config.params, icode: '21D89FD1124C5544' }
+  config.params = { ...config.params, icode: 'E1697D7DB0D2E54C' }
 
   if (config.data instanceof FormData) {
-    config.data.append('icode', '21D89FD1124C5544')
+    config.data.append('icode', 'E1697D7DB0D2E54C')
   } else {
-    config.data = { ...config.data, icode: '21D89FD1124C5544' }
+    config.data = { ...config.data, icode: 'E1697D7DB0D2E54C' }
   }
   return config
 })
